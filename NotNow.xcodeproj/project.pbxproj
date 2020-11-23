@@ -14,6 +14,7 @@
 		3D97380E256ABB6D004FD805 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3D9737F9256ABB6D004FD805 /* Assets.xcassets */; };
 		3D97380F256ABB6D004FD805 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3D9737F9256ABB6D004FD805 /* Assets.xcassets */; };
 		3D97381C256ABB96004FD805 /* Reminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D97381B256ABB96004FD805 /* Reminder.swift */; };
+		3D973821256C4631004FD805 /* NotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D973820256C4631004FD805 /* NotificationsManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		3D973808256ABB6D004FD805 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3D973809256ABB6D004FD805 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
 		3D97381B256ABB96004FD805 /* Reminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reminder.swift; sourceTree = "<group>"; };
+		3D973820256C4631004FD805 /* NotificationsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +61,7 @@
 		3D9737F6256ABB6C004FD805 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				3D97381F256C4624004FD805 /* Managers */,
 				3D97381A256ABB80004FD805 /* Model */,
 				3D9737F7256ABB6C004FD805 /* NotNowApp.swift */,
 				3D9737F8256ABB6D004FD805 /* ContentView.swift */,
@@ -99,6 +102,14 @@
 				3D97381B256ABB96004FD805 /* Reminder.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		3D97381F256C4624004FD805 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				3D973820256C4631004FD805 /* NotificationsManager.swift */,
+			);
+			path = Managers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -200,6 +211,7 @@
 			files = (
 				3D97381C256ABB96004FD805 /* Reminder.swift in Sources */,
 				3D97380C256ABB6D004FD805 /* ContentView.swift in Sources */,
+				3D973821256C4631004FD805 /* NotificationsManager.swift in Sources */,
 				3D97380A256ABB6D004FD805 /* NotNowApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

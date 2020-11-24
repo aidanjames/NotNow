@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3D54B9FE256D80270027B0E2 /* PersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D54B9FD256D80270027B0E2 /* PersistenceManager.swift */; };
+		3D54BA03256D81020027B0E2 /* FileManager+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D54BA02256D81020027B0E2 /* FileManager+Ext.swift */; };
+		3D54BA07256D813E0027B0E2 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D54BA06256D813E0027B0E2 /* Constants.swift */; };
+		3D54BA0E256D82500027B0E2 /* AllRemindersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D54BA0D256D82500027B0E2 /* AllRemindersView.swift */; };
+		3D54BA13256D827C0027B0E2 /* AllRemindersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D54BA12256D827C0027B0E2 /* AllRemindersViewModel.swift */; };
+		3D54BA19256D843B0027B0E2 /* AllRemindersEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D54BA18256D843B0027B0E2 /* AllRemindersEmptyStateView.swift */; };
 		3D97380A256ABB6D004FD805 /* NotNowApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D9737F7256ABB6C004FD805 /* NotNowApp.swift */; };
 		3D97380B256ABB6D004FD805 /* NotNowApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D9737F7256ABB6C004FD805 /* NotNowApp.swift */; };
 		3D97380C256ABB6D004FD805 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D9737F8256ABB6D004FD805 /* ContentView.swift */; };
@@ -18,6 +24,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3D54B9FD256D80270027B0E2 /* PersistenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceManager.swift; sourceTree = "<group>"; };
+		3D54BA02256D81020027B0E2 /* FileManager+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Ext.swift"; sourceTree = "<group>"; };
+		3D54BA06256D813E0027B0E2 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		3D54BA0D256D82500027B0E2 /* AllRemindersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllRemindersView.swift; sourceTree = "<group>"; };
+		3D54BA12256D827C0027B0E2 /* AllRemindersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllRemindersViewModel.swift; sourceTree = "<group>"; };
+		3D54BA18256D843B0027B0E2 /* AllRemindersEmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllRemindersEmptyStateView.swift; sourceTree = "<group>"; };
 		3D9737F7256ABB6C004FD805 /* NotNowApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotNowApp.swift; sourceTree = "<group>"; };
 		3D9737F8256ABB6D004FD805 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		3D9737F9256ABB6D004FD805 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -48,6 +60,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3D54BA01256D80DE0027B0E2 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				3D54BA02256D81020027B0E2 /* FileManager+Ext.swift */,
+				3D54BA06256D813E0027B0E2 /* Constants.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		3D54BA0C256D822C0027B0E2 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				3D54BA11256D825C0027B0E2 /* AllRemindersView */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		3D54BA11256D825C0027B0E2 /* AllRemindersView */ = {
+			isa = PBXGroup;
+			children = (
+				3D54BA0D256D82500027B0E2 /* AllRemindersView.swift */,
+				3D54BA12256D827C0027B0E2 /* AllRemindersViewModel.swift */,
+				3D54BA18256D843B0027B0E2 /* AllRemindersEmptyStateView.swift */,
+			);
+			path = AllRemindersView;
+			sourceTree = "<group>";
+		};
 		3D9737F1256ABB6C004FD805 = {
 			isa = PBXGroup;
 			children = (
@@ -61,6 +100,8 @@
 		3D9737F6256ABB6C004FD805 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				3D54BA0C256D822C0027B0E2 /* Views */,
+				3D54BA01256D80DE0027B0E2 /* Helpers */,
 				3D97381F256C4624004FD805 /* Managers */,
 				3D97381A256ABB80004FD805 /* Model */,
 				3D9737F7256ABB6C004FD805 /* NotNowApp.swift */,
@@ -108,6 +149,7 @@
 			isa = PBXGroup;
 			children = (
 				3D973820256C4631004FD805 /* NotificationsManager.swift */,
+				3D54B9FD256D80270027B0E2 /* PersistenceManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -212,7 +254,13 @@
 				3D97381C256ABB96004FD805 /* Reminder.swift in Sources */,
 				3D97380C256ABB6D004FD805 /* ContentView.swift in Sources */,
 				3D973821256C4631004FD805 /* NotificationsManager.swift in Sources */,
+				3D54BA03256D81020027B0E2 /* FileManager+Ext.swift in Sources */,
+				3D54BA07256D813E0027B0E2 /* Constants.swift in Sources */,
+				3D54B9FE256D80270027B0E2 /* PersistenceManager.swift in Sources */,
+				3D54BA0E256D82500027B0E2 /* AllRemindersView.swift in Sources */,
 				3D97380A256ABB6D004FD805 /* NotNowApp.swift in Sources */,
+				3D54BA19256D843B0027B0E2 /* AllRemindersEmptyStateView.swift in Sources */,
+				3D54BA13256D827C0027B0E2 /* AllRemindersViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

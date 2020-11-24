@@ -27,7 +27,7 @@ class NotificationManager {
     }
     
     
-    func scheduleNewNotification(id: UUID, title: String, subtitle: String, delay: Int) {
+    func scheduleNewNotification(id: String, title: String, subtitle: String, delay: Double) {
         center.getNotificationSettings { settings in
             guard (settings.authorizationStatus == .authorized) else { return }
             let content = UNMutableNotificationContent()

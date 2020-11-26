@@ -11,7 +11,18 @@ struct AllRemindersView: View {
     @StateObject var viewModel = AllRemindersViewModel()
     
     var body: some View {
-        Text("There are \(viewModel.allReminders.count) reminders.")
+        VStack {
+            Button(action: { viewModel.showingAddNewReminder = true } ) {
+                Text("Add new NotNow")
+            }
+            .fullScreenCover(isPresented: $viewModel.showingAddNewReminder) {
+                AddReminderView(viewModel: viewModel)
+            }
+            
+            ForEach(viewModel.allReminders) { reminder in
+                Text("\(reminder.title)")
+            }
+        }
     }
 }
 

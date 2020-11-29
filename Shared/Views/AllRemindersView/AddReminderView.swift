@@ -25,47 +25,51 @@ struct AddReminderView: View {
     
     var body: some View {
         NavigationView {
-            Form {
-                Section {
-                    TextField("Title", text: $title)
-                }
-                Section(header: Text("Reminder details")) {
-                    TextEditor(text: $description).frame(height: 100)
-                }
-                Section(header: Text("Shedule a reminder")) {
-                    Toggle("Shedule reminder?", isOn: $scheduleReminder)
-                    if scheduleReminder {
-                        DatePicker("Date/Time", selection: $reminderDate)
+            ZStack {
+                BaseView()
+                Form {
+                    Section {
+                        TextField("Title", text: $title)
+                    }
+                    Section(header: Text("Reminder details")) {
+                        TextEditor(text: $description).frame(height: 100)
+                    }
+                    Section(header: Text("Shedule a reminder")) {
+                        Toggle("Shedule reminder?", isOn: $scheduleReminder)
+                        if scheduleReminder {
+                            DatePicker("Date/Time", selection: $reminderDate)
+                        }
+                    }
+                    Section(header: Text("Tags")) {
+                        Button("Add new tag") {
+                            
+                        }
+                        Text("Hi there")
+                            .padding(7)
+                            .background(Color.blue.opacity(0.5))
+                            .cornerRadius(16)
                     }
                 }
-                Section(header: Text("Tags")) {
-                    Button("Add new tag") {
-                        
+                .opacity(0.9)
+                .navigationTitle(Text("Add new reminder"))
+                .toolbar(content: {
+                    ToolbarItem(placement: .confirmationAction) {
+                        Button(action: {
+                                viewModel.addNewReminder(title: title, description: description, reminderDates: scheduleReminder ? [reminderDate] : [], tags: tags)
+                            presentationMode.wrappedValue.dismiss()
+                            
+                        }) {
+                            Text("Save")
+                        }
+                        .disabled(saveButtonDisabled)
                     }
-                    Text("Hi there")
-                        .padding(7)
-                        .background(Color.blue.opacity(0.5))
-                        .cornerRadius(16)
-                }
-            }
-            .navigationTitle(Text("Add new reminder"))
-            .toolbar(content: {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button(action: {
-                            viewModel.addNewReminder(title: title, description: description, reminderDates: scheduleReminder ? [reminderDate] : [], tags: tags)
-                        presentationMode.wrappedValue.dismiss()
-                        
-                    }) {
-                        Text("Save")
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button(action: { presentationMode.wrappedValue.dismiss() }) {
+                            Text("Cancel")
+                        }
                     }
-                    .disabled(saveButtonDisabled)
-                }
-                ToolbarItem(placement: .cancellationAction) {
-                    Button(action: { presentationMode.wrappedValue.dismiss() }) {
-                        Text("Cancel")
-                    }
-                }
             })
+            }
         }
     }
 }

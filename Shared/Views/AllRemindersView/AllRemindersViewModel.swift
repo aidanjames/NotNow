@@ -27,11 +27,13 @@ class AllRemindersViewModel: ObservableObject {
         NotificationManager.shared.requestPermission()
         
         var reminderIds = [String]()
-        for _ in reminderDates {
-            // Use the date to work out the delay from today
-            let id = UUID().uuidString
-            NotificationManager.shared.scheduleNewNotification(id: id, title: title, subtitle: description, delay: 15)
-            reminderIds.append(id)
+        for date in reminderDates {
+            if date > Date() {
+                let delay = date - Date()
+                let id = UUID().uuidString
+                NotificationManager.shared.scheduleNewNotification(id: id, title: title, subtitle: description, delay: delay)
+                reminderIds.append(id)
+            }
         }
         
         let newReminder = Reminder(reminderDates: reminderDates, title: title, description: description, URL: nil, scheduledReminders: reminderIds)

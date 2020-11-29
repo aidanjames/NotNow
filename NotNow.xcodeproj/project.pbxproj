@@ -23,6 +23,7 @@
 		3D97380F256ABB6D004FD805 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3D9737F9256ABB6D004FD805 /* Assets.xcassets */; };
 		3D97381C256ABB96004FD805 /* Reminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D97381B256ABB96004FD805 /* Reminder.swift */; };
 		3D973821256C4631004FD805 /* NotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D973820256C4631004FD805 /* NotificationsManager.swift */; };
+		3DB23586257412CB0047BD87 /* Date+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB23585257412CB0047BD87 /* Date+Ext.swift */; };
 		3DC62BAD257033E2001A6DF0 /* AddReminderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC62BAC257033E2001A6DF0 /* AddReminderView.swift */; };
 /* End PBXBuildFile section */
 
@@ -45,6 +46,7 @@
 		3D973809256ABB6D004FD805 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
 		3D97381B256ABB96004FD805 /* Reminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reminder.swift; sourceTree = "<group>"; };
 		3D973820256C4631004FD805 /* NotificationsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsManager.swift; sourceTree = "<group>"; };
+		3DB23585257412CB0047BD87 /* Date+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Ext.swift"; sourceTree = "<group>"; };
 		3DC62BAC257033E2001A6DF0 /* AddReminderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReminderView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -80,6 +82,7 @@
 				3D54BA02256D81020027B0E2 /* FileManager+Ext.swift */,
 				3D54BA06256D813E0027B0E2 /* Constants.swift */,
 				3D0888A42572A32E00E45C48 /* Color+Ext.swift */,
+				3DB23585257412CB0047BD87 /* Date+Ext.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -273,6 +276,7 @@
 				3D973821256C4631004FD805 /* NotificationsManager.swift in Sources */,
 				3D08889F2572A18700E45C48 /* BaseView.swift in Sources */,
 				3D0888A52572A32E00E45C48 /* Color+Ext.swift in Sources */,
+				3DB23586257412CB0047BD87 /* Date+Ext.swift in Sources */,
 				3D54BA03256D81020027B0E2 /* FileManager+Ext.swift in Sources */,
 				3D54BA07256D813E0027B0E2 /* Constants.swift in Sources */,
 				3D54B9FE256D80270027B0E2 /* PersistenceManager.swift in Sources */,

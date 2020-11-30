@@ -14,7 +14,7 @@ struct AllRemindersView: View {
         ZStack {
             BaseView()
             Color(.white)
-                .opacity(0.5)
+                .opacity(0.9)
                 .ignoresSafeArea()
             VStack {
                 Button(action: { viewModel.showingAddNewReminder = true } ) {
@@ -25,7 +25,7 @@ struct AllRemindersView: View {
                 }
                 
                 ForEach(viewModel.allReminders) { reminder in
-                    Text("\(reminder.title)")
+                    ReminderListView(reminder: reminder, width: 150, height: 150)
                 }
             }
         }

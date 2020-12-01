@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ReminderListView: View {
     var reminder: Reminder
-    var width: CGFloat
+    //    var width: CGFloat
     var height: CGFloat
     
     var body: some View {
@@ -21,12 +21,11 @@ struct ReminderListView: View {
                 Text("\(reminder.title)")
                     .font(.title3)
                     .bold()
-                Spacer()
+                    .layoutPriority(1)
                 Text("\(reminder.description)")
-                Spacer()
+                    .font(.caption)
                 Text("Due: 25/04/2020")
                     .font(.caption)
-                    .foregroundColor(.green)
                 if !reminder.tags.isEmpty {
                     ScrollView(.horizontal) {
                         Text("Tags: \(reminder.tags.first!)")
@@ -36,14 +35,16 @@ struct ReminderListView: View {
                 }
             }
             .padding()
+            Image(systemName: "clock")
+                .position(x: 15, y: 15)
         }
-        .frame(width: width, height: height)
+        .frame(height: height)
     }
 }
 
 struct ReminderListView_Previews: PreviewProvider {
     static var previews: some View {
         let reminder = Reminder(reminderDates: [Date().addingTimeInterval(11111)], title: "Email Mitch", description: "Tell Mitch about the game this weekend and see if he's keen to go to the pub to watch.", scheduledReminders: [UUID().uuidString], tags: ["email"])
-        return ReminderListView(reminder: reminder, width: 150, height: 150)
+        return ReminderListView(reminder: reminder, height: 150)
     }
 }

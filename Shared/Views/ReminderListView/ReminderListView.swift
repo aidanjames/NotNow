@@ -17,26 +17,32 @@ struct ReminderListView: View {
             Color.secondary
                 .opacity(0.2)
                 .cornerRadius(16)
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: 0) {
+                HStack {
+                    Spacer()
+                    Image(systemName: "clock")
+                }
                 Text("\(reminder.title)")
                     .font(.title3)
                     .bold()
                     .layoutPriority(1)
                 Text("\(reminder.description)")
                     .font(.caption)
+                    .padding(.vertical)
                 Text("Due: 25/04/2020")
                     .font(.caption)
                 if !reminder.tags.isEmpty {
                     ScrollView(.horizontal) {
-                        Text("Tags: \(reminder.tags.first!)")
+                        ForEach(reminder.tags, id: \.self) { tag in
+                            TagView(tagName: tag, font: .caption)
+                        }
                     }
                     .font(.caption)
-                    .padding(0)
+                    .padding(5)
                 }
             }
             .padding()
-            Image(systemName: "clock")
-                .position(x: 15, y: 15)
+            
         }
         .frame(height: height)
     }

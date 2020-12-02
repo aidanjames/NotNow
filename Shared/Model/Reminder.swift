@@ -15,21 +15,7 @@ struct Reminder: Codable, Identifiable {
     var description: String
     var URL: String?
     var scheduledReminders = [String]()
-    var tags = Set<String>()
-//    var tags: Set<String> {
-//        var tagsToReturn = Set<String>()
-//        for word in title.components(separatedBy: " ") {
-//            if word.contains("#") {
-//                tagsToReturn.insert(word)
-//            }
-//        }
-//        for word in description.components(separatedBy: " ") {
-//            if word.contains("#") {
-//                tagsToReturn.insert(word)
-//            }
-//        }
-//        return tagsToReturn
-//    }
+    var tags = [String]()
     
     var dueDate: Date {
         if reminderDates.isEmpty { return createdDate }

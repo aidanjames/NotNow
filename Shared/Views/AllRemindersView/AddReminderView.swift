@@ -14,7 +14,7 @@ struct AddReminderView: View {
     @State private var description: String = ""
     @State private var reminderDate: Date = Date()
     @State private var scheduleReminder: Bool = false
-    @State private var tags = Set<String>()
+    @State private var tags = [String]()
     @State private var newTag = ""
     
     @Environment(\.presentationMode) var presentationMode

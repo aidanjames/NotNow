@@ -16,7 +16,7 @@ class AllRemindersViewModel: ObservableObject {
         allReminders = PersistenceManager.shared.fetchReminders()
     }
     
-    func addNewReminder(title: String, description: String, reminderDates: [Date], tags: Set<String>) {
+    func addNewReminder(title: String, description: String, reminderDates: [Date], tags: [String]) {
         guard !reminderDates.isEmpty else {
             let newReminder = Reminder(reminderDates: reminderDates, title: title, description: description, URL: nil, scheduledReminders: [], tags: tags)
             self.allReminders.append(newReminder)

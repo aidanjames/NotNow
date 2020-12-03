@@ -11,7 +11,7 @@ struct AllRemindersView: View {
     @StateObject var viewModel = AllRemindersViewModel()
     
     let columns = [
-        GridItem(.flexible()),
+//        GridItem(.flexible()),
         GridItem(.flexible())
     ]
     
@@ -24,6 +24,10 @@ struct AllRemindersView: View {
             VStack {
                 Button(action: { viewModel.showingAddNewReminder = true } ) {
                     Text("Add new NotNow")
+                        .frame(width: 280, height: 50)
+                        .background(Color.green)
+                        .cornerRadius(16)
+                        .foregroundColor(.white)
                 }
                 .fullScreenCover(isPresented: $viewModel.showingAddNewReminder) {
                     AddReminderView(viewModel: viewModel)
@@ -33,7 +37,8 @@ struct AllRemindersView: View {
                         ForEach(viewModel.allReminders) { reminder in
                             ReminderListView(reminder: reminder, height: 150)
                         }
-                    }.padding(.horizontal, 10)
+                    }
+                    .padding(.horizontal, 10)
                 }
                 
             }

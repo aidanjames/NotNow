@@ -11,7 +11,6 @@ struct AllRemindersView: View {
     @StateObject var viewModel = AllRemindersViewModel()
     
     let columns = [
-//        GridItem(.flexible()),
         GridItem(.flexible())
     ]
     
@@ -23,7 +22,7 @@ struct AllRemindersView: View {
                 .ignoresSafeArea()
             VStack {
                 Button(action: { viewModel.showingAddNewReminder = true } ) {
-                    Text("Add new NotNow")
+                    Text("Add new reminder")
                         .frame(width: 280, height: 50)
                         .background(Color.green)
                         .cornerRadius(16)

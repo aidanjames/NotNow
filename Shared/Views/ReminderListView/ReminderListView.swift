@@ -29,7 +29,7 @@ struct ReminderListView: View {
                 Text("\(reminder.description)")
                     .font(.caption)
                     .padding(.vertical)
-                Text("Due: 25/04/2020")
+                Text("Due: \(reminder.dueDate.friendlyDate())")
                     .font(.caption)
                 if !reminder.tags.isEmpty {
                     ScrollView(.horizontal) {

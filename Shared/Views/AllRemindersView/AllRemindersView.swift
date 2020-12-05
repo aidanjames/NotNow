@@ -15,33 +15,39 @@ struct AllRemindersView: View {
     ]
     
     var body: some View {
-        ZStack {
-            BaseView()
-            Color(.white)
-                .opacity(0.9)
-                .ignoresSafeArea()
-            VStack {
-                Button(action: { viewModel.showingAddNewReminder = true } ) {
-                    Text("Add new reminder")
-                        .frame(width: 280, height: 50)
-                        .background(Color.green)
-                        .cornerRadius(16)
-                        .foregroundColor(.white)
-                }
-                .fullScreenCover(isPresented: $viewModel.showingAddNewReminder) {
-                    AddReminderView(viewModel: viewModel)
-                }
+        NavigationView {
+            ZStack {
+                BaseView()
+                Color(.white)
+                    .opacity(0.9)
+                    .ignoresSafeArea()
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 10) {
                         ForEach(viewModel.allReminders) { reminder in
-                            ReminderListView(reminder: reminder, height: 150)
+                            ReminderListView(reminder: reminder, height: 170)
                         }
                     }
                     .padding(.horizontal, 10)
                 }
-                
+                .fullScreenCover(isPresented: $viewModel.showingAddNewReminder) {
+                    AddReminderView(viewModel: viewModel)
+                }
             }
+            .navigationTitle("NotNow")
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    Button(action: {
+                        viewModel.showingAddNewReminder = true
+                    }) {
+                        Image(systemName: "plus.circle.fill")
+                            .font(.title)
+                    }
+                }
+            }
+            
         }
+        .accentColor(.green)
+
     }
 }
 

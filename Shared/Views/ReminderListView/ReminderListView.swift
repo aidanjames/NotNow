@@ -9,7 +9,6 @@ import SwiftUI
 
 struct ReminderListView: View {
     var reminder: Reminder
-    //    var width: CGFloat
     var height: CGFloat
     
     var body: some View {
@@ -33,8 +32,10 @@ struct ReminderListView: View {
                     .font(.caption)
                 if !reminder.tags.isEmpty {
                     ScrollView(.horizontal) {
-                        ForEach(reminder.tags, id: \.self) { tag in
-                            TagView(tagName: tag, font: .caption)
+                        HStack {
+                            ForEach(Array(reminder.tags), id: \.self) { tag in
+                                TagView(tagName: tag, font: .caption)
+                            }
                         }
                     }
                     .font(.caption)
@@ -45,6 +46,9 @@ struct ReminderListView: View {
             
         }
         .frame(height: height)
+        .onAppear {
+            print(reminder.tags)
+        }
     }
 }
 

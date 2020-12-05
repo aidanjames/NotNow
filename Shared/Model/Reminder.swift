@@ -15,7 +15,8 @@ struct Reminder: Codable, Identifiable {
     var description: String
     var URL: String?
     var scheduledReminders = [String]()
-    var tags = [String]()
+//    var tags = [String]()
+    var tags = Set<String>()
     
     var dueDate: Date {
         if reminderDates.isEmpty { return createdDate }

@@ -14,11 +14,11 @@ struct AddReminderView: View {
     @State private var description: String = ""
     @State private var reminderDate: Date = Date()
     @State private var scheduleReminder: Bool = false
-    @State private var tags = [String]()
+    @State private var tags: Set<String> = ["Food", "Hiking", "Fudge", "hard", "fridge", "basking", "school"]
     @State private var newTag = ""
     
     @Environment(\.presentationMode) var presentationMode
-
+    
     var saveButtonDisabled: Bool {
         return title.isEmpty
     }
@@ -40,14 +40,14 @@ struct AddReminderView: View {
                             DatePicker("Date/Time", selection: $reminderDate)
                         }
                     }
-                    Section(header: Text("Tags")) {
-                        Button("Add new tag") {
-                            
+                    Section(header: Text("Tags (use hashtags to add tags)")) {
+                        ScrollView(.horizontal) {
+                            HStack {
+                                ForEach(Array(tags), id: \.self) { tag in
+                                    TagView(tagName: tag, font: .caption)
+                                }
+                            }
                         }
-                        Text("Hi there")
-                            .padding(7)
-                            .background(Color.blue.opacity(0.5))
-                            .cornerRadius(16)
                     }
                 }
                 .opacity(0.9)
@@ -55,7 +55,7 @@ struct AddReminderView: View {
                 .toolbar(content: {
                     ToolbarItem(placement: .confirmationAction) {
                         Button(action: {
-                                viewModel.addNewReminder(title: title, description: description, reminderDates: scheduleReminder ? [reminderDate] : [], tags: tags)
+                            viewModel.addNewReminder(title: title, description: description, reminderDates: scheduleReminder ? [reminderDate] : [], tags: tags)
                             presentationMode.wrappedValue.dismiss()
                             
                         }) {
@@ -68,7 +68,7 @@ struct AddReminderView: View {
                             Text("Cancel")
                         }
                     }
-            })
+                })
             }
         }
     }

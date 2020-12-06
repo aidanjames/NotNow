@@ -14,7 +14,7 @@ struct AddReminderView: View {
     @State private var description: String = ""
     @State private var reminderDate: Date = Date()
     @State private var scheduleReminder: Bool = false
-    @State private var tags: Set<String> = ["Food", "Hiking", "Fudge", "hard", "fridge", "basking", "school"]
+    @State private var tags: Set<String> = []//["Food", "Hiking", "Fudge", "hard", "fridge", "basking", "school"]
     @State private var newTag = ""
     
     @Environment(\.presentationMode) var presentationMode
@@ -30,9 +30,15 @@ struct AddReminderView: View {
                 Form {
                     Section {
                         TextField("Title", text: $title)
+                            .onChange(of: title) { value in
+                                populateTagsWhilstTyping()
+                            }
                     }
                     Section(header: Text("Reminder details")) {
                         TextEditor(text: $description).frame(height: 100)
+                            .onChange(of: description) { value in
+                                populateTagsWhilstTyping()
+                            }
                     }
                     Section(header: Text("Shedule a reminder")) {
                         Toggle("Shedule reminder?", isOn: $scheduleReminder)
@@ -71,6 +77,23 @@ struct AddReminderView: View {
                 })
             }
         }
+    }
+    
+    func populateTagsWhilstTyping() {
+        var tempTagsSet: Set<String> = []
+        let splitTitle = title.components(separatedBy: " ")
+        let splitDescription = description.components(separatedBy: " ")
+        for word in splitTitle {
+            if word.contains("#") {
+                tempTagsSet.insert(word)
+            }
+        }
+        for word in splitDescription {
+            if word.contains("#") {
+                tempTagsSet.insert(word)
+            }
+        }
+        tags = tempTagsSet
     }
 }
 

@@ -44,6 +44,11 @@ class NotificationManager {
     }
     
     
+    func snoozeReminder(id: String, snoozeDelay: Int) {
+        // TODO
+    }
+    
+    
     func cancelSpecificNotifications(ids: [String]) {
         center.removePendingNotificationRequests(withIdentifiers: ids)
     }

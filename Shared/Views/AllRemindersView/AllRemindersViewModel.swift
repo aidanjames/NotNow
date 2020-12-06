@@ -11,6 +11,10 @@ class AllRemindersViewModel: ObservableObject {
     @Published var allReminders = [Reminder]()
     @Published var showingAddNewReminder: Bool = false
     
+    var allRemindersSorted: [Reminder] {
+        return allReminders.sorted { $0.dueDate < $1.dueDate }
+    }
+    
     init() {
         allReminders = PersistenceManager.shared.fetchReminders()
     }
@@ -38,6 +42,15 @@ class AllRemindersViewModel: ObservableObject {
         let newReminder = Reminder(reminderDates: reminderDates, title: title, description: description, URL: nil, scheduledReminders: reminderIds, tags: tags)
         self.allReminders.append(newReminder)
         PersistenceManager.shared.saveReminders(allReminders)
+    }
+    
+    func deleteReminder(id: UUID) {
+        if let index = allReminders.firstIndex(where: { $0.id == id}) {
+            // Cancel all notifications associated with the reminder
+            NotificationManager.shared.cancelSpecificNotifications(ids: allReminders[index].scheduledReminders)
+            allReminders.remove(at: index)
+            PersistenceManager.shared.saveReminders(allReminders)
+        }
     }
 
 }

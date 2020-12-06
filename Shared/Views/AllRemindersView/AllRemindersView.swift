@@ -23,8 +23,11 @@ struct AllRemindersView: View {
                     .ignoresSafeArea()
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 10) {
-                        ForEach(viewModel.allReminders) { reminder in
+                        ForEach(viewModel.allRemindersSorted) { reminder in
                             ReminderListView(reminder: reminder, height: 170)
+                                .onTapGesture {
+                                    viewModel.deleteReminder(id: reminder.id)
+                                }
                         }
                     }
                     .padding(.horizontal, 10)
@@ -47,8 +50,8 @@ struct AllRemindersView: View {
             
         }
         .accentColor(.green)
-
     }
+    
 }
 
 struct AllRemindersView_Previews: PreviewProvider {

@@ -16,33 +16,48 @@ struct ReminderListView: View {
             Color.secondary
                 .opacity(0.2)
                 .cornerRadius(16)
-            VStack(alignment: .leading, spacing: 0) {
                 HStack {
-                    Spacer()
-                    Image(systemName: "clock")
-                }
-                Text("\(reminder.title)")
-                    .font(.title3)
-                    .bold()
-                    .layoutPriority(1)
-                Text("\(reminder.description)")
-                    .font(.caption)
-                    .padding(.vertical)
-                Text("Due: \(reminder.dueDate.friendlyDate())")
-                    .font(.caption)
-                if !reminder.tags.isEmpty {
-                    ScrollView(.horizontal) {
-                        HStack {
-                            ForEach(Array(reminder.tags), id: \.self) { tag in
-                                TagView(tagName: tag, font: .caption)
+                    Image(systemName: "circle")
+                        .font(.largeTitle)
+                        .padding(5)
+                    VStack(alignment: .leading) {
+                        Text("\(reminder.title)")
+                            .font(.title)
+                            .bold()
+                            .layoutPriority(1)
+                        Text("Due: \(reminder.dueDate.friendlyDate())")
+                            .font(.caption)
+                        if !reminder.tags.isEmpty {
+                            ScrollView(.horizontal) {
+                                HStack {
+                                    ForEach(Array(reminder.tags), id: \.self) { tag in
+                                        TagView(tagName: tag, font: .caption)
+                                    }
+                                }
                             }
+                            .font(.caption)
+                            .padding(5)
                         }
                     }
-                    .font(.caption)
-                    .padding(5)
+                    Spacer()
+                    
                 }
-            }
-            .padding()
+                
+                
+                HStack {
+                    
+                    Spacer()
+                    Button(action: {} ) {
+                        Image(systemName: "ellipsis")
+                            .font(.title)
+                            .rotationEffect(.degrees(90))
+                    }
+                    .padding()
+                }
+                
+
+
+            
             
         }
         .frame(height: height)

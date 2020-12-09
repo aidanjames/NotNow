@@ -24,7 +24,7 @@ struct AllRemindersView: View {
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 10) {
                         ForEach(viewModel.allRemindersSorted) { reminder in
-                            ReminderListView(reminder: reminder, height: 170)
+                            ReminderListView(reminder: reminder, height: 120)
                                 .onTapGesture {
                                     viewModel.deleteReminder(id: reminder.id)
                                 }

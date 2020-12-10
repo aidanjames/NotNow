@@ -12,16 +12,16 @@ class AllRemindersViewModel: ObservableObject {
     @Published var showingAddNewReminder: Bool = false
     
     var allRemindersSorted: [Reminder] {
-        return allReminders.sorted { $0.dueDate < $1.dueDate }
+        return allReminders.sorted { $0.nextDueDate < $1.nextDueDate }
     }
     
     init() {
         allReminders = PersistenceManager.shared.fetchReminders()
     }
     
-    func addNewReminder(title: String, description: String, reminderDates: [Date], tags: Set<String>) {
+    func addNewReminder(title: String, description: String, nextDueDate: Date, reminderDates: [Date], tags: Set<String>) {
         guard !reminderDates.isEmpty else {
-            let newReminder = Reminder(reminderDates: reminderDates, title: title, description: description, URL: nil, scheduledReminders: [], tags: tags)
+            let newReminder = Reminder(reminderDates: reminderDates, title: title, description: description, URL: nil, scheduledReminders: [], tags: tags, nextDueDate: nextDueDate)
             self.allReminders.append(newReminder)
             PersistenceManager.shared.saveReminders(allReminders)
             return
@@ -39,7 +39,7 @@ class AllRemindersViewModel: ObservableObject {
             }
         }
         
-        let newReminder = Reminder(reminderDates: reminderDates, title: title, description: description, URL: nil, scheduledReminders: reminderIds, tags: tags)
+        let newReminder = Reminder(reminderDates: reminderDates, title: title, description: description, URL: nil, scheduledReminders: reminderIds, tags: tags, nextDueDate: nextDueDate)
         self.allReminders.append(newReminder)
         PersistenceManager.shared.saveReminders(allReminders)
     }

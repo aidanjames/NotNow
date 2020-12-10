@@ -16,49 +16,40 @@ struct ReminderListView: View {
             Color.secondary
                 .opacity(0.2)
                 .cornerRadius(16)
-                HStack {
-                    Image(systemName: "circle")
-                        .font(.largeTitle)
-                        .padding(5)
-                    VStack(alignment: .leading) {
-                        Text("\(reminder.title)")
-                            .font(.title)
-                            .bold()
-                            .layoutPriority(1)
-                        Text("Due: \(reminder.dueDate.friendlyDate())")
-                            .font(.caption)
-                        if !reminder.tags.isEmpty {
-                            ScrollView(.horizontal) {
-                                HStack {
-                                    ForEach(Array(reminder.tags), id: \.self) { tag in
-                                        TagView(tagName: tag, font: .caption)
-                                    }
+            HStack {
+                Image(systemName: "circle")
+                    .font(.largeTitle)
+                    .padding(5)
+                VStack(alignment: .leading) {
+                    Text("\(reminder.title)")
+                        .font(.title)
+                        .bold()
+                        .layoutPriority(1)
+                    Text("Due: \(reminder.nextDueDate == Date.futureDate ? "Someday" : reminder.nextDueDate.friendlyDate())")
+                        .font(.caption)
+                    if !reminder.tags.isEmpty {
+                        ScrollView(.horizontal) {
+                            HStack {
+                                ForEach(Array(reminder.tags), id: \.self) { tag in
+                                    TagView(tagName: tag, font: .caption)
                                 }
                             }
-                            .font(.caption)
-                            .padding(5)
                         }
+                        .font(.caption)
+                        .padding(5)
                     }
-                    Spacer()
-                    
                 }
-                
-                
-                HStack {
-                    
-                    Spacer()
-                    Button(action: {} ) {
-                        Image(systemName: "ellipsis")
-                            .font(.title)
-                            .rotationEffect(.degrees(90))
-                    }
-                    .padding()
+                Spacer()
+            }
+            HStack {
+                Spacer()
+                Button(action: {} ) {
+                    Image(systemName: "ellipsis")
+                        .font(.title)
+                        .rotationEffect(.degrees(90))
                 }
-                
-
-
-            
-            
+                .padding()
+            }
         }
         .frame(height: height)
         .onAppear {
@@ -69,7 +60,7 @@ struct ReminderListView: View {
 
 struct ReminderListView_Previews: PreviewProvider {
     static var previews: some View {
-        let reminder = Reminder(reminderDates: [Date().addingTimeInterval(11111)], title: "Email Mitch", description: "Tell Mitch about the game this weekend and see if he's keen to go to the pub to watch.", scheduledReminders: [UUID().uuidString], tags: ["email"])
+        let reminder = Reminder(reminderDates: [Date().addingTimeInterval(11111)], title: "Email Mitch", description: "Tell Mitch about the game this weekend and see if he's keen to go to the pub to watch.", scheduledReminders: [UUID().uuidString], tags: ["email"], nextDueDate: Date())
         return ReminderListView(reminder: reminder, height: 150)
     }
 }

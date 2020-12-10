@@ -17,11 +17,8 @@ struct Reminder: Codable, Identifiable {
     var scheduledReminders = [String]()
 //    var tags = [String]()
     var tags = Set<String>()
-    
-    var dueDate: Date {
-        if reminderDates.isEmpty { return createdDate }
-        return reminderDates.first(where: { $0 > Date() }) ?? reminderDates.last!
-    }
+    var nextDueDate: Date
+
     
     mutating func cancelAllScheduledReminders() {
         NotificationManager.shared.cancelSpecificNotifications(ids: scheduledReminders)

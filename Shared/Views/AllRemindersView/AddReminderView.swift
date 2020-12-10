@@ -13,9 +13,12 @@ struct AddReminderView: View {
     @State private var title: String = ""
     @State private var description: String = ""
     @State private var reminderDate: Date = Date()
-    @State private var scheduleReminder: Bool = false
-    @State private var tags: Set<String> = []//["Food", "Hiking", "Fudge", "hard", "fridge", "basking", "school"]
+    @State private var scheduleReminder: Bool = true
+    @State private var tags: Set<String> = []
     @State private var newTag = ""
+    
+    var dueDateOptions = ["Specific date/time", "Someday"]
+    @State private var selectedDueDateOption = 0
     
     @Environment(\.presentationMode) var presentationMode
     
@@ -25,57 +28,60 @@ struct AddReminderView: View {
     
     var body: some View {
         NavigationView {
-            ZStack {
-                BaseView()
-                Form {
-                    Section {
-                        TextField("Title", text: $title)
-                            .onChange(of: title) { value in
-                                populateTagsWhilstTyping()
-                            }
-                    }
-                    Section(header: Text("Reminder details")) {
-                        TextEditor(text: $description).frame(height: 100)
-                            .onChange(of: description) { value in
-                                populateTagsWhilstTyping()
-                            }
-                    }
-                    Section(header: Text("Shedule a reminder")) {
-                        Toggle("Shedule reminder?", isOn: $scheduleReminder)
-                        if scheduleReminder {
-                            DatePicker("Date/Time", selection: $reminderDate)
+            Form {
+                Section {
+                    TextField("Title", text: $title)
+                        .onChange(of: title) { value in
+                            populateTagsWhilstTyping()
+                        }
+                }
+                Section(header: Text("Additional info (optional)")) {
+                    TextEditor(text: $description).frame(height: 70)
+                        .font(.caption)
+                        .onChange(of: description) { value in
+                            populateTagsWhilstTyping()
+                        }
+                }
+                Section(header: Text("When")) {
+                    Picker(selection: $selectedDueDateOption, label: Text("When due")) {
+                        ForEach(0..<dueDateOptions.count) {
+                            Text(self.dueDateOptions[$0])
                         }
                     }
-                    Section(header: Text("Tags (use hashtags to add tags)")) {
-                        ScrollView(.horizontal) {
-                            HStack {
-                                ForEach(Array(tags), id: \.self) { tag in
-                                    TagView(tagName: tag, font: .caption)
-                                }
+                    if selectedDueDateOption == 0 {
+                        DatePicker("Date/time", selection: $reminderDate)
+                        Toggle("Shedule reminder?", isOn: $scheduleReminder)
+                    }
+                }
+                Section(header: Text("Tags (use hashtags to add tags)")) {
+                    ScrollView(.horizontal) {
+                        HStack {
+                            ForEach(Array(tags), id: \.self) { tag in
+                                TagView(tagName: tag, font: .caption)
                             }
                         }
                     }
                 }
-                .opacity(0.9)
-                .navigationTitle(Text("Add new reminder"))
-                .toolbar(content: {
-                    ToolbarItem(placement: .confirmationAction) {
-                        Button(action: {
-                            viewModel.addNewReminder(title: title, description: description, reminderDates: scheduleReminder ? [reminderDate] : [], tags: tags)
-                            presentationMode.wrappedValue.dismiss()
-                            
-                        }) {
-                            Text("Save")
-                        }
-                        .disabled(saveButtonDisabled)
-                    }
-                    ToolbarItem(placement: .cancellationAction) {
-                        Button(action: { presentationMode.wrappedValue.dismiss() }) {
-                            Text("Cancel")
-                        }
-                    }
-                })
             }
+            .navigationTitle(Text("Add new reminder"))
+            .toolbar(content: {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button(action: {
+                        if selectedDueDateOption == 1 { scheduleReminder = false }
+                        viewModel.addNewReminder(title: title, description: description, nextDueDate: selectedDueDateOption == 0 ? reminderDate : Date.futureDate, reminderDates: scheduleReminder ? [reminderDate] : [], tags: tags)
+                        presentationMode.wrappedValue.dismiss()
+                        
+                    }) {
+                        Text("Save")
+                    }
+                    .disabled(saveButtonDisabled)
+                }
+                ToolbarItem(placement: .cancellationAction) {
+                    Button(action: { presentationMode.wrappedValue.dismiss() }) {
+                        Text("Cancel")
+                    }
+                }
+            })
         }
     }
     

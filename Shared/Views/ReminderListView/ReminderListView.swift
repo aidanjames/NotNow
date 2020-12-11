@@ -41,12 +41,14 @@ struct ReminderListView: View {
                 }
                 Spacer()
             }
+            .foregroundColor(Color(Colours.midnightBlue))
             HStack {
                 Spacer()
                 Button(action: {} ) {
                     Image(systemName: "ellipsis")
                         .font(.title)
                         .rotationEffect(.degrees(90))
+                        .foregroundColor(Color(Colours.hotCoral))
                 }
                 .padding()
             }

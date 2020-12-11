@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AllRemindersView: View {
     @StateObject var viewModel = AllRemindersViewModel()
+    @State private var showingDeleteWarning = false
     
     
     let columns = [
@@ -22,7 +23,16 @@ struct AllRemindersView: View {
                     ForEach(viewModel.allRemindersSorted) { reminder in
                         ReminderListView(reminder: reminder, height: 120)
                             .onTapGesture {
-                                viewModel.deleteReminder(id: reminder.id)
+                                showingDeleteWarning = true
+                            }
+                            .alert(isPresented: $showingDeleteWarning) {
+                                Alert(
+                                    title: Text("Are you sure you want to delete this?"),
+                                    message: Text("There is no undo"),
+                                    primaryButton: .destructive(Text("Delete")) {
+                                        viewModel.deleteReminder(id: reminder.id)
+                                    },
+                                    secondaryButton: .cancel())
                             }
                     }
                 }
@@ -31,7 +41,7 @@ struct AllRemindersView: View {
             .fullScreenCover(isPresented: $viewModel.showingAddNewReminder) {
                 AddReminderView(viewModel: viewModel)
             }
-            .navigationTitle("NotNow")
+            .navigationTitle("NotNow").foregroundColor(Color(Colours.midnightBlue))
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     Button(action: {
@@ -44,7 +54,7 @@ struct AllRemindersView: View {
             }
             
         }
-        .accentColor(.green)
+        .accentColor(Color(Colours.hotCoral))
     }
     
 }

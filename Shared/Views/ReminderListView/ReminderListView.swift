@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ReminderListView: View {
+    @ObservedObject var viewModel: AllRemindersViewModel
     var reminder: Reminder
     var height: CGFloat
     
@@ -17,16 +18,23 @@ struct ReminderListView: View {
                 .opacity(0.2)
                 .cornerRadius(16)
             HStack {
-                Image(systemName: "circle")
-                    .font(.largeTitle)
-                    .padding(5)
+                Button(action: { toggleCompletedForReminder() }) {
+                    Image(systemName: reminder.completed ? "checkmark.circle.fill" : "circle")
+                        .font(.largeTitle)
+                        .padding(5)
+                }
                 VStack(alignment: .leading) {
                     Text("\(reminder.title)")
                         .font(.title)
                         .bold()
                         .layoutPriority(1)
-                    Text("Due: \(reminder.nextDueDate == Date.futureDate ? "Someday" : reminder.nextDueDate.friendlyDate())")
-                        .font(.caption)
+                    HStack {
+                        Text("Due: \(reminder.nextDueDate == Date.futureDate ? "Someday" : reminder.nextDueDate.friendlyDate()) ")
+                        if !reminder.notifications.isEmpty {
+                            Image(systemName: "clock")
+                                .foregroundColor(Color(Colours.hotCoral))
+                        }
+                    }.font(.caption)
                     if !reminder.tags.isEmpty {
                         ScrollView(.horizontal) {
                             HStack {
@@ -54,15 +62,28 @@ struct ReminderListView: View {
             }
         }
         .frame(height: height)
+        .opacity(reminder.completed ? 0.5 : 1.0)
         .onAppear {
             print(reminder.tags)
+        }
+    }
+    
+    func toggleCompletedForReminder() {
+        if let index = viewModel.allReminders.firstIndex(where: { $0.id == reminder.id }) {
+            viewModel.allReminders[index].completed.toggle()
+            
+            if viewModel.allReminders[index].completed && !viewModel.allReminders[index].notifications.isEmpty {
+                viewModel.allReminders[index].cancelAllScheduledReminders()
+            }
+            
+            viewModel.updateReminder(reminder: viewModel.allReminders[index])
         }
     }
 }
 
 struct ReminderListView_Previews: PreviewProvider {
     static var previews: some View {
-        let reminder = Reminder(reminderDates: [Date().addingTimeInterval(11111)], title: "Email Mitch", description: "Tell Mitch about the game this weekend and see if he's keen to go to the pub to watch.", scheduledReminders: [UUID().uuidString], tags: ["email"], nextDueDate: Date())
-        return ReminderListView(reminder: reminder, height: 150)
+        let reminder = Reminder(title: "Email Mitch", description: "Tell Mitch about the game this weekend and see if he's keen to go to the pub to watch.", tags: ["email"], nextDueDate: Date(), notifications: [UUID().uuidString: Date().addingTimeInterval(11111)])
+        return ReminderListView(viewModel: AllRemindersViewModel(), reminder: reminder, height: 150)
     }
 }

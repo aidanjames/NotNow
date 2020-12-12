@@ -19,9 +19,9 @@ class AllRemindersViewModel: ObservableObject {
         allReminders = PersistenceManager.shared.fetchReminders()
     }
     
-    func addNewReminder(title: String, description: String, nextDueDate: Date, reminderDates: [Date], tags: Set<String>) {
-        guard !reminderDates.isEmpty else {
-            let newReminder = Reminder(reminderDates: reminderDates, title: title, description: description, URL: nil, scheduledReminders: [], tags: tags, nextDueDate: nextDueDate)
+    func addNewReminder(title: String, description: String, nextDueDate: Date, notificationDates: [Date], tags: Set<String>) {
+        guard !notificationDates.isEmpty else {
+            let newReminder = Reminder(title: title, description: description, URL: nil, tags: tags, nextDueDate: nextDueDate)
             self.allReminders.append(newReminder)
             PersistenceManager.shared.saveReminders(allReminders)
             return
@@ -30,24 +30,43 @@ class AllRemindersViewModel: ObservableObject {
         NotificationManager.shared.requestPermission()
         
         var reminderIds = [String]()
-        for date in reminderDates {
+        var notifications = [String: Date]()
+        for date in notificationDates {
             if date > Date() {
                 let delay = date - Date()
                 let id = UUID().uuidString
                 NotificationManager.shared.scheduleNewNotification(id: id, title: title, subtitle: description, delay: delay)
                 reminderIds.append(id)
+                notifications[id] = Date().addingTimeInterval(delay)
             }
         }
         
-        let newReminder = Reminder(reminderDates: reminderDates, title: title, description: description, URL: nil, scheduledReminders: reminderIds, tags: tags, nextDueDate: nextDueDate)
+        let newReminder = Reminder(title: title, description: description, URL: nil, tags: tags, nextDueDate: nextDueDate, notifications: notifications)
+        
         self.allReminders.append(newReminder)
         PersistenceManager.shared.saveReminders(allReminders)
+        
+        for reminder in allReminders {
+            print(reminder.notifications)
+        }
     }
+    
+    
+    func updateReminder(reminder: Reminder) {
+        // Find the index in the existing array
+        if let index = allReminders.firstIndex(where: { $0.id == reminder.id }) {
+            // Replace the reminder with the updated one
+            allReminders[index] = reminder
+        }
+        // Save
+        PersistenceManager.shared.saveReminders(allReminders)
+    }
+    
     
     func deleteReminder(id: UUID) {
         if let index = allReminders.firstIndex(where: { $0.id == id}) {
             // Cancel all notifications associated with the reminder
-            NotificationManager.shared.cancelSpecificNotifications(ids: allReminders[index].scheduledReminders)
+            NotificationManager.shared.cancelSpecificNotifications(ids: Array(allReminders[index].notifications.keys))
             allReminders.remove(at: index)
             PersistenceManager.shared.saveReminders(allReminders)
         }

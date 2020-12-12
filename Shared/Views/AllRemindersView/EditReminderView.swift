@@ -1,13 +1,13 @@
 //
-//  AddReminderView.swift
+//  EditReminderView.swift
 //  NotNow (iOS)
 //
-//  Created by Aidan Pendlebury on 26/11/2020.
+//  Created by Aidan Pendlebury on 12/12/2020.
 //
 
 import SwiftUI
 
-struct AddReminderView: View {
+struct EditReminderView: View {
     @ObservedObject var viewModel: AllRemindersViewModel
     
     @State private var title: String = ""
@@ -103,8 +103,9 @@ struct AddReminderView: View {
     }
 }
 
-struct AddReminderView_Previews: PreviewProvider {
+struct EditReminderView_Previews: PreviewProvider {
     static var previews: some View {
-        AddReminderView(viewModel: AllRemindersViewModel())
+        EditReminderView(viewModel: AllRemindersViewModel())
     }
 }
+

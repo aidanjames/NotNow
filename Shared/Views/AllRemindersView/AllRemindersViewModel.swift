@@ -45,10 +45,6 @@ class AllRemindersViewModel: ObservableObject {
         
         self.allReminders.append(newReminder)
         PersistenceManager.shared.saveReminders(allReminders)
-        
-        for reminder in allReminders {
-            print(reminder.notifications)
-        }
     }
     
     

@@ -23,7 +23,7 @@ struct ReminderListView: View {
                         .font(.largeTitle)
                         .padding(5)
                 }
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: 5) {
                     Text("\(reminder.title)")
                         .font(.title)
                         .bold()

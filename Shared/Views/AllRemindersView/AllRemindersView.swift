@@ -10,6 +10,7 @@ import SwiftUI
 struct AllRemindersView: View {
     @StateObject var viewModel = AllRemindersViewModel()
     @State private var showingDeleteWarning = false
+    @State private var tappedReminder: UUID?
     
     
     let columns = [
@@ -23,6 +24,7 @@ struct AllRemindersView: View {
                     ForEach(viewModel.allRemindersSorted) { reminder in
                         ReminderListView(viewModel: viewModel, reminder: reminder, height: 120)
                             .onTapGesture {
+                                tappedReminder = reminder.id
                                 showingDeleteWarning = true
                             }
                             .alert(isPresented: $showingDeleteWarning) {
@@ -30,7 +32,9 @@ struct AllRemindersView: View {
                                     title: Text("Are you sure you want to delete this?"),
                                     message: Text("There is no undo"),
                                     primaryButton: .destructive(Text("Delete")) {
-                                        viewModel.deleteReminder(id: reminder.id)
+                                        withAnimation {
+                                            viewModel.deleteReminder(id: tappedReminder!)
+                                        }
                                     },
                                     secondaryButton: .cancel())
                             }

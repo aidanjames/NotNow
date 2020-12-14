@@ -10,7 +10,17 @@ import SwiftUI
 struct AllRemindersView: View {
     @StateObject var viewModel = AllRemindersViewModel()
     @State private var showingDeleteWarning = false
+    @State private var showingActionSheet = false
     @State private var tappedReminder: UUID?
+    
+    var tappedReminderTitle: String {
+        if let reminderId = tappedReminder {
+            if let index = viewModel.allReminders.firstIndex(where: { $0.id == reminderId }) {
+                return viewModel.allReminders[index].title
+            }
+        }
+        return ""
+    }
     
     
     let columns = [
@@ -22,7 +32,7 @@ struct AllRemindersView: View {
             ScrollView {
                 LazyVGrid(columns: columns, spacing: 10) {
                     ForEach(viewModel.allRemindersSorted) { reminder in
-                        ReminderListView(viewModel: viewModel, reminder: reminder, height: 120)
+                        ReminderListView(viewModel: viewModel, showingActionSheet: $showingActionSheet, tappedReminder: $tappedReminder, reminder: reminder, height: 120)
                             .onTapGesture {
                                 tappedReminder = reminder.id
                                 showingDeleteWarning = true
@@ -37,6 +47,19 @@ struct AllRemindersView: View {
                                         }
                                     },
                                     secondaryButton: .cancel())
+                            }
+                            .actionSheet(isPresented: $showingActionSheet) {
+                                ActionSheet(title: Text("Select an option"), message: nil, buttons: [
+                                    .default(Text("Delete '\(tappedReminderTitle)'")) {
+                                        showingDeleteWarning.toggle()
+                                    },
+                                        .default(Text("Snooze by 5 minutes")) { snoozeTappedReminder(by: 300) },
+                                        .default(Text("Snooze by 30 minutes")) { snoozeTappedReminder(by: 1800) },
+                                        .default(Text("Snooze by 1 hour")) { snoozeTappedReminder(by: 3600) },
+                                        .default(Text("Snooze by 1 day")) { snoozeTappedReminder(by: 86400) },
+                                        .default(Text("Snooze by custom time")) { print("Something else") },
+                                        .cancel()
+                                    ])
                             }
                     }
                 }
@@ -59,6 +82,12 @@ struct AllRemindersView: View {
             
         }
         .accentColor(Color(Colours.hotCoral))
+    }
+    
+    func snoozeTappedReminder(by seconds: Double) {
+        if let index = viewModel.allReminders.firstIndex(where: { $0.id == tappedReminder } ) {
+            viewModel.allReminders[index].snoozeDueTime(by: seconds)
+        }
     }
     
 }

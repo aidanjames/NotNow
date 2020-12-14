@@ -38,7 +38,18 @@ struct Reminder: Codable, Identifiable {
         let reminderId = UUID().uuidString
         let delay = reminderDate.timeIntervalSince(Date())
         NotificationManager.shared.scheduleNewNotification(id: reminderId, title: title, subtitle: description, delay: delay)
+        self.notifications[reminderId] = reminderDate
     }
     
+    mutating func snoozeDueTime(by seconds: Double) {
+        // Calculate the new reminder date/time
+        let newTime = nextDueDate.addingTimeInterval(seconds)
+        // Change the due date
+        self.nextDueDate = newTime
+        // Delete all notifications for the reminder
+        self.cancelAllScheduledReminders()
+        // Shedule a new reminder
+        self.scheduleNewReminder(on: newTime)
+    }
     
 }

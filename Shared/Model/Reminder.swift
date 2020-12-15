@@ -43,7 +43,7 @@ struct Reminder: Codable, Identifiable {
     
     mutating func snoozeDueTime(by seconds: Double) {
         // Calculate the new reminder date/time
-        let newTime = nextDueDate.addingTimeInterval(seconds)
+        let newTime = Date().addingTimeInterval(seconds)
         // Change the due date
         self.nextDueDate = newTime
         // Delete all notifications for the reminder

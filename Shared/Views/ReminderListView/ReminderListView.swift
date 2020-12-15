@@ -19,6 +19,10 @@ struct ReminderListView: View {
             Color.secondary
                 .opacity(0.2)
                 .cornerRadius(16)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(Color(Colours.hotCoral), lineWidth: reminder.nextDueDate < Date() ? 1 : 0)
+                )
             HStack {
                 Button(action: { toggleCompletedForReminder() }) {
                     Image(systemName: reminder.completed ? "checkmark.circle.fill" : "circle")
@@ -32,9 +36,23 @@ struct ReminderListView: View {
                         .layoutPriority(1)
                     HStack {
                         Text("Due: \(reminder.nextDueDate == Date.futureDate ? "Someday" : reminder.nextDueDate.friendlyDate()) ")
-                        if !reminder.notifications.isEmpty {
+                        if !reminder.notifications.isEmpty && reminder.nextDueDate > Date() {
                             Image(systemName: "clock")
                                 .foregroundColor(Color(Colours.hotCoral))
+                        } else if !reminder.notifications.isEmpty {
+                            Button(action: {
+                                tappedReminder = reminder.id
+                                showingActionSheet = true
+                            } ) {
+                                HStack(spacing: 2) {
+                                    Text("Snooze")
+                                    Image(systemName: "zzz")
+                                }
+                                .foregroundColor(.white)
+                                .padding(5)
+                                .background(Color(Colours.hotCoral))
+                                .cornerRadius(16)
+                            }
                         }
                     }.font(.caption)
                     if !reminder.tags.isEmpty {
@@ -50,10 +68,6 @@ struct ReminderListView: View {
                     }
                 }
                 Spacer()
-            }
-            .foregroundColor(Color(Colours.midnightBlue))
-            HStack {
-                Spacer()
                 Button(action: {
                     tappedReminder = reminder.id
                     showingActionSheet.toggle()
@@ -65,6 +79,7 @@ struct ReminderListView: View {
                 }
                 .padding()
             }
+            .foregroundColor(Color(Colours.midnightBlue))
         }
         .frame(height: height)
         .opacity(reminder.completed ? 0.5 : 1.0)
@@ -88,7 +103,7 @@ struct ReminderListView: View {
 
 struct ReminderListView_Previews: PreviewProvider {
     static var previews: some View {
-        let reminder = Reminder(title: "Email Mitch", description: "Tell Mitch about the game this weekend and see if he's keen to go to the pub to watch.", tags: ["email"], nextDueDate: Date(), notifications: [UUID().uuidString: Date().addingTimeInterval(11111)])
+        let reminder = Reminder(title: "Email Mitch about a dog", description: "Tell Mitch about the game this weekend and see if he's keen to go to the pub to watch.", tags: ["email"], nextDueDate: Date(), notifications: [UUID().uuidString: Date().addingTimeInterval(11111)])
         return ReminderListView(viewModel: AllRemindersViewModel(), showingActionSheet: .constant(false), tappedReminder: .constant(nil), reminder: reminder, height: 150)
     }
 }

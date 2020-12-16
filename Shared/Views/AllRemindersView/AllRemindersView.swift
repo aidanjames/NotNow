@@ -12,7 +12,7 @@ struct AllRemindersView: View {
     @State private var showingDeleteWarning = false
     @State private var showingActionSheet = false
     @State private var tappedReminder: UUID?
-    
+        
     var tappedReminderTitle: String {
         if let reminderId = tappedReminder {
             if let index = viewModel.allReminders.firstIndex(where: { $0.id == reminderId }) {

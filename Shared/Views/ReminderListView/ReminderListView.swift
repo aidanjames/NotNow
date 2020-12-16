@@ -14,6 +14,10 @@ struct ReminderListView: View {
     var reminder: Reminder
     var height: CGFloat
     
+    @State private var isOverdue = false
+    
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    
     var body: some View {
         ZStack {
             Color.secondary
@@ -21,7 +25,7 @@ struct ReminderListView: View {
                 .cornerRadius(16)
                 .overlay(
                     RoundedRectangle(cornerRadius: 16)
-                        .stroke(Color(Colours.hotCoral), lineWidth: reminder.nextDueDate < Date() ? 1 : 0)
+                        .stroke(Color(Colours.hotCoral), lineWidth: isOverdue ? 1 : 0)
                 )
             HStack {
                 Button(action: { toggleCompletedForReminder() }) {
@@ -36,10 +40,10 @@ struct ReminderListView: View {
                         .layoutPriority(1)
                     HStack {
                         Text("Due: \(reminder.nextDueDate == Date.futureDate ? "Someday" : reminder.nextDueDate.friendlyDate()) ")
-                        if !reminder.notifications.isEmpty && reminder.nextDueDate > Date() {
+                        if !reminder.notifications.isEmpty && !isOverdue {
                             Image(systemName: "clock")
                                 .foregroundColor(Color(Colours.hotCoral))
-                        } else if !reminder.notifications.isEmpty {
+                        } else if isOverdue {
                             Button(action: {
                                 tappedReminder = reminder.id
                                 showingActionSheet = true
@@ -85,6 +89,13 @@ struct ReminderListView: View {
         .opacity(reminder.completed ? 0.5 : 1.0)
         .onAppear {
             print(reminder.tags)
+        }
+        .onReceive(timer) { date in
+            if date > reminder.nextDueDate {
+                isOverdue = true
+            } else {
+                isOverdue = false
+            }
         }
     }
     

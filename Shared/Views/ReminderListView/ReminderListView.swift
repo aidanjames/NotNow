@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ReminderListView: View {
     @ObservedObject var viewModel: AllRemindersViewModel
-    @Binding var showingActionSheet: Bool
+    @Binding var showingSnoozeActionSheet: Bool
     @Binding var tappedReminder: UUID?
     var reminder: Reminder
     var height: CGFloat
@@ -45,8 +45,9 @@ struct ReminderListView: View {
                                 .foregroundColor(Color(Colours.hotCoral))
                         } else if isOverdue {
                             Button(action: {
+                                print("Snooze pressed")
                                 tappedReminder = reminder.id
-                                showingActionSheet = true
+                                showingSnoozeActionSheet = true
                             } ) {
                                 HStack(spacing: 2) {
                                     Text("Snooze")
@@ -73,8 +74,9 @@ struct ReminderListView: View {
                 }
                 Spacer()
                 Button(action: {
+                    print("Ellipsis pressed")
                     tappedReminder = reminder.id
-                    showingActionSheet.toggle()
+                    showingSnoozeActionSheet.toggle()
                 } ) {
                     Image(systemName: "ellipsis")
                         .font(.title)
@@ -115,6 +117,6 @@ struct ReminderListView: View {
 struct ReminderListView_Previews: PreviewProvider {
     static var previews: some View {
         let reminder = Reminder(title: "Email Mitch about a dog", description: "Tell Mitch about the game this weekend and see if he's keen to go to the pub to watch.", tags: ["email"], nextDueDate: Date(), notifications: [UUID().uuidString: Date().addingTimeInterval(11111)])
-        return ReminderListView(viewModel: AllRemindersViewModel(), showingActionSheet: .constant(false), tappedReminder: .constant(nil), reminder: reminder, height: 150)
+        return ReminderListView(viewModel: AllRemindersViewModel(), showingSnoozeActionSheet: .constant(false), tappedReminder: .constant(nil), reminder: reminder, height: 150)
     }
 }

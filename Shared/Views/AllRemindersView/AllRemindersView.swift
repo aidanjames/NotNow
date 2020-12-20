@@ -24,15 +24,10 @@ struct AllRemindersView: View {
         return ""
     }
     
-    
-    let columns = [
-        GridItem(.flexible())
-    ]
-    
     var body: some View {
         NavigationView {
             ScrollView {
-                LazyVGrid(columns: columns, spacing: 10) {
+                LazyVStack {
                     ForEach(viewModel.allRemindersSorted) { reminder in
                         ReminderListView(viewModel: viewModel, showingSnoozeActionSheet: $showingSnoozeActionSheet, tappedReminder: $tappedReminder, reminder: reminder, height: 120)
                             .alert(isPresented: $showingDeleteWarning) {
@@ -49,10 +44,26 @@ struct AllRemindersView: View {
                             .actionSheet(isPresented: $showingSnoozeActionSheet) {
                                 ActionSheet(title: Text("Select an option"), message: nil, buttons: [
                                     .destructive(Text("Delete '\(tappedReminderTitle)'")) { showingDeleteWarning.toggle() },
-                                    .default(Text("Snooze by 5 minutes")) { snoozeTappedReminder(by: 300) },
-                                    .default(Text("Snooze by 30 minutes")) { snoozeTappedReminder(by: 1800) },
-                                    .default(Text("Snooze by 1 hour")) { snoozeTappedReminder(by: 3600) },
-                                    .default(Text("Snooze by 1 day")) { snoozeTappedReminder(by: 86400) },
+                                    .default(Text("Snooze by 5 minutes")) {
+                                        withAnimation {
+                                            snoozeTappedReminder(by: 300)
+                                        }
+                                    },
+                                    .default(Text("Snooze by 30 minutes")) {
+                                        withAnimation {
+                                            snoozeTappedReminder(by: 1800)
+                                        }
+                                    },
+                                    .default(Text("Snooze by 1 hour")) {
+                                        withAnimation {
+                                            snoozeTappedReminder(by: 3600)
+                                        }
+                                    },
+                                    .default(Text("Snooze by 1 day")) {
+                                        withAnimation {
+                                            snoozeTappedReminder(by: 86400)
+                                        }
+                                    },
                                     .default(Text("Reschedule")) { print("Something else") },
                                     .cancel()
                                 ])
@@ -83,6 +94,7 @@ struct AllRemindersView: View {
     func snoozeTappedReminder(by seconds: Double) {
         if let index = viewModel.allReminders.firstIndex(where: { $0.id == tappedReminder } ) {
             viewModel.allReminders[index].snoozeDueTime(by: seconds)
+            viewModel.saveState()
         }
     }
     

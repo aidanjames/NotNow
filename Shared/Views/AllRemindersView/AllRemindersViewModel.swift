@@ -44,7 +44,7 @@ class AllRemindersViewModel: ObservableObject {
         let newReminder = Reminder(title: title, description: description, URL: nil, tags: tags, nextDueDate: nextDueDate, notifications: notifications)
         
         self.allReminders.append(newReminder)
-        PersistenceManager.shared.saveReminders(allReminders)
+        saveState()
     }
     
     
@@ -55,7 +55,7 @@ class AllRemindersViewModel: ObservableObject {
             allReminders[index] = reminder
         }
         // Save
-        PersistenceManager.shared.saveReminders(allReminders)
+        saveState()
     }
     
     
@@ -64,8 +64,12 @@ class AllRemindersViewModel: ObservableObject {
             // Cancel all notifications associated with the reminder
             NotificationManager.shared.cancelSpecificNotifications(ids: Array(allReminders[index].notifications.keys))
             allReminders.remove(at: index)
-            PersistenceManager.shared.saveReminders(allReminders)
+            saveState()
         }
+    }
+    
+    func saveState() {
+        PersistenceManager.shared.saveReminders(allReminders)
     }
 
 }

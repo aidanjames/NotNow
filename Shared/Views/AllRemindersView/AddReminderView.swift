@@ -10,6 +10,7 @@ import SwiftUI
 struct AddReminderView: View {
     @ObservedObject var viewModel: AllRemindersViewModel
     
+    
     @State private var title: String = ""
     @State private var description: String = ""
     @State private var reminderDate: Date = Date()

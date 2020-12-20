@@ -39,13 +39,13 @@ struct ReminderListView: View {
                         .bold()
                         .layoutPriority(1)
                     HStack {
-                        Text("Due: \(reminder.nextDueDate == Date.futureDate ? "Someday" : reminder.nextDueDate.friendlyDate()) ")
+                        Text("Due: \(reminder.nextDueDate == Date.futureDate ? "Someday" : reminder.nextDueDate == Date.completedDate ? "Completed" : reminder.nextDueDate.friendlyDate()) ")
+                            .foregroundColor(reminder.nextDueDate < Date() ? Color(Colours.hotCoral) : Color(Colours.midnightBlue))
                         if !reminder.notifications.isEmpty && !isOverdue {
                             Image(systemName: "clock")
                                 .foregroundColor(Color(Colours.hotCoral))
                         } else if isOverdue {
                             Button(action: {
-                                print("Snooze pressed")
                                 tappedReminder = reminder.id
                                 showingSnoozeActionSheet = true
                             } ) {
@@ -103,7 +103,10 @@ struct ReminderListView: View {
     
     func toggleCompletedForReminder() {
         if let index = viewModel.allReminders.firstIndex(where: { $0.id == reminder.id }) {
-            viewModel.allReminders[index].completed.toggle()
+            withAnimation {
+                viewModel.allReminders[index].completed.toggle()
+                viewModel.allReminders[index].nextDueDate = Date.completedDate
+            }
             
             if viewModel.allReminders[index].completed && !viewModel.allReminders[index].notifications.isEmpty {
                 viewModel.allReminders[index].cancelAllScheduledReminders()

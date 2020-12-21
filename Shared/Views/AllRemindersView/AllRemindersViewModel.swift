@@ -10,6 +10,8 @@ import Foundation
 class AllRemindersViewModel: ObservableObject {
     @Published var allReminders = [Reminder]()
     @Published var showingAddNewReminder: Bool = false
+    @Published var tappedReminder = ""
+    @Published var editReminder = false
     
     var allRemindersSorted: [Reminder] {
         return allReminders.sorted { $0.nextDueDate < $1.nextDueDate }

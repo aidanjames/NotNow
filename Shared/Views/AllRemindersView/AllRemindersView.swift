@@ -14,6 +14,7 @@ struct AllRemindersView: View {
     @State private var showingSnoozeActionSheet = false
     @State private var showingRescheduleActionSheet = false
     @State private var tappedReminder: UUID?
+    @State private var editReminder = false
     
     var tappedReminderTitle: String {
         if let reminderId = tappedReminder {
@@ -64,7 +65,10 @@ struct AllRemindersView: View {
                                             snoozeTappedReminder(by: 86400)
                                         }
                                     },
-                                    .default(Text("Reschedule")) { print("Something else") },
+                                    .default(Text("Reschedule")) {
+                                        editReminder = true
+                                        viewModel.showingAddNewReminder = true
+                                    },
                                     .cancel()
                                 ])
                             }
@@ -73,7 +77,7 @@ struct AllRemindersView: View {
                 .padding(.horizontal, 10)
             }
             .fullScreenCover(isPresented: $viewModel.showingAddNewReminder) {
-                AddReminderView(viewModel: viewModel)
+                AddReminderView(viewModel: viewModel, reminder: editReminder ? findReminderWithId(id: tappedReminder!) : nil)
             }
             .navigationTitle("NotNow").foregroundColor(Color(Colours.midnightBlue))
             .toolbar {
@@ -86,7 +90,6 @@ struct AllRemindersView: View {
                     }
                 }
             }
-            
         }
         .accentColor(Color(Colours.hotCoral))
     }
@@ -96,6 +99,13 @@ struct AllRemindersView: View {
             viewModel.allReminders[index].snoozeDueTime(by: seconds)
             viewModel.saveState()
         }
+    }
+    
+    func findReminderWithId(id: UUID) -> Reminder? {
+        if let index = viewModel.allReminders.firstIndex(where: { $0.id == tappedReminder } ) {
+            return viewModel.allReminders[index]
+        }
+        return nil
     }
     
 }

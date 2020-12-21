@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AddReminderView: View {
     @ObservedObject var viewModel: AllRemindersViewModel
-    
+    var reminder: Reminder?
     
     @State private var title: String = ""
     @State private var description: String = ""
@@ -64,14 +64,11 @@ struct AddReminderView: View {
                     }
                 }
             }
-            .navigationTitle(Text("Add new reminder"))
+            .navigationTitle(Text("\(reminder != nil ? "Edit" : "New") reminder"))
             .toolbar(content: {
                 ToolbarItem(placement: .confirmationAction) {
                     Button(action: {
-                        if selectedDueDateOption == 1 { scheduleReminder = false }
-                        viewModel.addNewReminder(title: title, description: description, nextDueDate: selectedDueDateOption == 0 ? reminderDate : Date.futureDate, notificationDates: scheduleReminder ? [reminderDate] : [], tags: tags)
-                        presentationMode.wrappedValue.dismiss()
-                        
+                        saveReminder()
                     }) {
                         Text("Save")
                     }
@@ -83,6 +80,9 @@ struct AddReminderView: View {
                     }
                 }
             })
+            .onAppear {
+                populateExistingReminderDetails()
+            }
         }
     }
     
@@ -102,10 +102,46 @@ struct AddReminderView: View {
         }
         tags = tempTagsSet
     }
+    
+    func populateExistingReminderDetails() {
+        guard reminder != nil else { return }
+        title = reminder!.title
+        description = reminder!.description
+        if reminder!.nextDueDate == Date.futureDate {
+            selectedDueDateOption = 1
+        } else {
+            reminderDate = reminder!.nextDueDate
+        }
+        tags = reminder!.tags
+    }
+    
+    func saveReminder() {
+        if reminder != nil {
+            // Find the existing reminder and updated it
+            if selectedDueDateOption == 1 { scheduleReminder = false }
+            // Make a new reminder object (which will just be a copy of the updated existing reminder)
+            if let reminder = reminder {
+                var new_reminders = [String: Date]()
+                if selectedDueDateOption == 0 {
+                    let id = UUID().uuidString
+                    new_reminders[id] = reminderDate
+                }
+                let updatedReminder = Reminder(id: reminder.id, createdDate: reminder.createdDate, title: title, description: description, URL: nil, tags: tags, nextDueDate: reminderDate, completed: false, notifications: new_reminders)
+                viewModel.updateReminder(reminder: updatedReminder)
+            }
+            
+            presentationMode.wrappedValue.dismiss()
+        } else {
+            // Add new reminder
+            if selectedDueDateOption == 1 { scheduleReminder = false }
+            viewModel.addNewReminder(title: title, description: description, nextDueDate: selectedDueDateOption == 0 ? reminderDate : Date.futureDate, notificationDates: scheduleReminder ? [reminderDate] : [], tags: tags)
+            presentationMode.wrappedValue.dismiss()
+        }
+    }
 }
 
 struct AddReminderView_Previews: PreviewProvider {
     static var previews: some View {
-        AddReminderView(viewModel: AllRemindersViewModel())
+        AddReminderView(viewModel: AllRemindersViewModel(), reminder: Reminder(title: "My reminder", description: "This", nextDueDate: Date()))
     }
 }

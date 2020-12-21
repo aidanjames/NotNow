@@ -13,11 +13,9 @@ struct AllRemindersView: View {
     @State private var showingDeleteWarning = false
     @State private var showingSnoozeActionSheet = false
     @State private var showingRescheduleActionSheet = false
-    @State private var tappedReminder: UUID?
-    @State private var editReminder = false
     
     var tappedReminderTitle: String {
-        if let reminderId = tappedReminder {
+        if let reminderId = viewModel.tappedReminder {
             if let index = viewModel.allReminders.firstIndex(where: { $0.id == reminderId }) {
                 return viewModel.allReminders[index].title
             }
@@ -30,14 +28,14 @@ struct AllRemindersView: View {
             ScrollView {
                 LazyVStack {
                     ForEach(viewModel.allRemindersSorted) { reminder in
-                        ReminderListView(viewModel: viewModel, showingSnoozeActionSheet: $showingSnoozeActionSheet, tappedReminder: $tappedReminder, reminder: reminder, height: 120)
+                        ReminderListView(viewModel: viewModel, showingSnoozeActionSheet: $showingSnoozeActionSheet, reminder: reminder, height: 120)
                             .alert(isPresented: $showingDeleteWarning) {
                                 Alert(
                                     title: Text("Are you sure you want to delete this?"),
                                     message: Text("There is no undo"),
                                     primaryButton: .destructive(Text("Delete")) {
                                         withAnimation {
-                                            viewModel.deleteReminder(id: tappedReminder!)
+                                            viewModel.deleteReminder(id: viewModel.tappedReminder!)
                                         }
                                     },
                                     secondaryButton: .cancel())
@@ -65,8 +63,8 @@ struct AllRemindersView: View {
                                             snoozeTappedReminder(by: 86400)
                                         }
                                     },
-                                    .default(Text("Reschedule")) {
-                                        editReminder = true
+                                    .default(Text("Edit/Reschedule")) {
+                                        viewModel.editReminder = true
                                         viewModel.showingAddNewReminder = true
                                     },
                                     .cancel()
@@ -77,7 +75,7 @@ struct AllRemindersView: View {
                 .padding(.horizontal, 10)
             }
             .fullScreenCover(isPresented: $viewModel.showingAddNewReminder) {
-                AddReminderView(viewModel: viewModel, reminder: editReminder ? findReminderWithId(id: tappedReminder!) : nil)
+                AddReminderView(viewModel: viewModel, reminder: viewModel.editReminder ? findReminderWithId(id: viewModel.tappedReminder!) : nil)
             }
             .navigationTitle("NotNow").foregroundColor(Color(Colours.midnightBlue))
             .toolbar {
@@ -95,14 +93,14 @@ struct AllRemindersView: View {
     }
     
     func snoozeTappedReminder(by seconds: Double) {
-        if let index = viewModel.allReminders.firstIndex(where: { $0.id == tappedReminder } ) {
+        if let index = viewModel.allReminders.firstIndex(where: { $0.id == viewModel.tappedReminder } ) {
             viewModel.allReminders[index].snoozeDueTime(by: seconds)
             viewModel.saveState()
         }
     }
     
     func findReminderWithId(id: UUID) -> Reminder? {
-        if let index = viewModel.allReminders.firstIndex(where: { $0.id == tappedReminder } ) {
+        if let index = viewModel.allReminders.firstIndex(where: { $0.id == viewModel.tappedReminder } ) {
             return viewModel.allReminders[index]
         }
         return nil

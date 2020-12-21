@@ -10,7 +10,7 @@ import Foundation
 class AllRemindersViewModel: ObservableObject {
     @Published var allReminders = [Reminder]()
     @Published var showingAddNewReminder: Bool = false
-    @Published var tappedReminder = ""
+    @Published var tappedReminder: UUID?
     @Published var editReminder = false
     
     var allRemindersSorted: [Reminder] {

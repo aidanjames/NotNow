@@ -10,7 +10,6 @@ import SwiftUI
 struct ReminderListView: View {
     @ObservedObject var viewModel: AllRemindersViewModel
     @Binding var showingSnoozeActionSheet: Bool
-    @Binding var tappedReminder: UUID?
     var reminder: Reminder
     var height: CGFloat
     
@@ -39,14 +38,14 @@ struct ReminderListView: View {
                         .bold()
                         .layoutPriority(1)
                     HStack {
-                        Text("Due: \(reminder.nextDueDate == Date.futureDate ? "Someday" : reminder.nextDueDate == Date.completedDate ? "Completed" : reminder.nextDueDate.friendlyDate()) ")
+                        Text(reminder.nextDueDate == Date.futureDate ? "Due: Someday" : reminder.nextDueDate == Date.completedDate ? "Completed" : "Due: \(reminder.nextDueDate.friendlyDate())")
                             .foregroundColor(reminder.nextDueDate < Date() ? Color(Colours.hotCoral) : Color(Colours.midnightBlue))
                         if !reminder.notifications.isEmpty && !isOverdue {
                             Image(systemName: "clock")
                                 .foregroundColor(Color(Colours.hotCoral))
                         } else if isOverdue {
                             Button(action: {
-                                tappedReminder = reminder.id
+                                viewModel.tappedReminder = reminder.id
                                 showingSnoozeActionSheet = true
                             } ) {
                                 HStack(spacing: 2) {
@@ -74,8 +73,7 @@ struct ReminderListView: View {
                 }
                 Spacer()
                 Button(action: {
-                    print("Ellipsis pressed")
-                    tappedReminder = reminder.id
+                    viewModel.tappedReminder = reminder.id
                     showingSnoozeActionSheet.toggle()
                 } ) {
                     Image(systemName: "ellipsis")
@@ -120,6 +118,6 @@ struct ReminderListView: View {
 struct ReminderListView_Previews: PreviewProvider {
     static var previews: some View {
         let reminder = Reminder(title: "Email Mitch about a dog", description: "Tell Mitch about the game this weekend and see if he's keen to go to the pub to watch.", tags: ["email"], nextDueDate: Date(), notifications: [UUID().uuidString: Date().addingTimeInterval(11111)])
-        return ReminderListView(viewModel: AllRemindersViewModel(), showingSnoozeActionSheet: .constant(false), tappedReminder: .constant(nil), reminder: reminder, height: 150)
+        return ReminderListView(viewModel: AllRemindersViewModel(), showingSnoozeActionSheet: .constant(false), reminder: reminder, height: 150)
     }
 }

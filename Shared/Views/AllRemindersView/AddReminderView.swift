@@ -83,6 +83,10 @@ struct AddReminderView: View {
             .onAppear {
                 populateExistingReminderDetails()
             }
+            .onDisappear {
+                viewModel.editReminder = false
+                viewModel.tappedReminder = nil
+            }
         }
     }
     
@@ -117,26 +121,19 @@ struct AddReminderView: View {
     
     func saveReminder() {
         if reminder != nil {
-            // Find the existing reminder and updated it
+            // Find the existing reminder and update it
             if selectedDueDateOption == 1 { scheduleReminder = false }
             // Make a new reminder object (which will just be a copy of the updated existing reminder)
             if let reminder = reminder {
-                var new_reminders = [String: Date]()
-                if selectedDueDateOption == 0 {
-                    let id = UUID().uuidString
-                    new_reminders[id] = reminderDate
-                }
-                let updatedReminder = Reminder(id: reminder.id, createdDate: reminder.createdDate, title: title, description: description, URL: nil, tags: tags, nextDueDate: reminderDate, completed: false, notifications: new_reminders)
-                viewModel.updateReminder(reminder: updatedReminder)
+                let updatedReminder = Reminder(id: reminder.id, createdDate: reminder.createdDate, title: title, description: description, URL: nil, tags: tags, nextDueDate: reminderDate, completed: false, notifications: [:])
+                viewModel.updateReminder(reminder: updatedReminder, notificationDates: [reminderDate])
             }
-            
-            presentationMode.wrappedValue.dismiss()
         } else {
             // Add new reminder
             if selectedDueDateOption == 1 { scheduleReminder = false }
             viewModel.addNewReminder(title: title, description: description, nextDueDate: selectedDueDateOption == 0 ? reminderDate : Date.futureDate, notificationDates: scheduleReminder ? [reminderDate] : [], tags: tags)
-            presentationMode.wrappedValue.dismiss()
         }
+        presentationMode.wrappedValue.dismiss()
     }
 }
 

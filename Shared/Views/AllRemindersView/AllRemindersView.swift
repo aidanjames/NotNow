@@ -96,6 +96,7 @@ struct AllRemindersView: View {
         if let index = viewModel.allReminders.firstIndex(where: { $0.id == viewModel.tappedReminder } ) {
             viewModel.allReminders[index].snoozeDueTime(by: seconds)
             viewModel.saveState()
+            viewModel.tappedReminder = nil
         }
     }
     

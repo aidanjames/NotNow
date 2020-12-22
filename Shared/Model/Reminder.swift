@@ -10,11 +10,9 @@ import Foundation
 struct Reminder: Codable, Identifiable {
     var id = UUID()
     var createdDate = Date()
-//    var reminderDates = [Date]()
     var title: String
     var description: String
     var URL: String?
-//    var scheduledReminders = [String]()
     var tags = Set<String>()
     var nextDueDate: Date
     var completed = false
@@ -42,12 +40,12 @@ struct Reminder: Codable, Identifiable {
     }
     
     mutating func snoozeDueTime(by seconds: Double) {
+        // Delete all notifications for the reminder (they will be replaced)
+        self.cancelAllScheduledReminders()
         // Calculate the new reminder date/time
         let newTime = Date().addingTimeInterval(seconds)
         // Change the due date
         self.nextDueDate = newTime
-        // Delete all notifications for the reminder
-        self.cancelAllScheduledReminders()
         // Shedule a new reminder
         self.scheduleNewReminder(on: newTime)
     }

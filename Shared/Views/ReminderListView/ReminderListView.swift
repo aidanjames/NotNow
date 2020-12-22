@@ -34,7 +34,7 @@ struct ReminderListView: View {
                 }
                 VStack(alignment: .leading, spacing: 5) {
                     Text("\(reminder.title)")
-                        .font(.title)
+                        .font(.title2)
                         .bold()
                         .layoutPriority(1)
                     HStack {
@@ -87,9 +87,6 @@ struct ReminderListView: View {
         }
         .frame(height: height)
         .opacity(reminder.completed ? 0.5 : 1.0)
-        .onAppear {
-            print(reminder.tags)
-        }
         .onReceive(timer) { date in
             if date > reminder.nextDueDate {
                 isOverdue = true
@@ -105,12 +102,7 @@ struct ReminderListView: View {
                 viewModel.allReminders[index].completed.toggle()
                 viewModel.allReminders[index].nextDueDate = Date.completedDate
             }
-            
-            if viewModel.allReminders[index].completed && !viewModel.allReminders[index].notifications.isEmpty {
-                viewModel.allReminders[index].cancelAllScheduledReminders()
-            }
-            
-            viewModel.updateReminder(reminder: viewModel.allReminders[index])
+            viewModel.updateReminder(reminder: viewModel.allReminders[index], notificationDates: [])
         }
     }
 }

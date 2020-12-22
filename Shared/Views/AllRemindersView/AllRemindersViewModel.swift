@@ -50,13 +50,18 @@ class AllRemindersViewModel: ObservableObject {
     }
     
     
-    func updateReminder(reminder: Reminder) {
+    func updateReminder(reminder: Reminder, notificationDates: [Date]) {
         // Find the index in the existing array
         if let index = allReminders.firstIndex(where: { $0.id == reminder.id }) {
+            // Cancel scheduled notifications (as they will be replaced with the new ones)
+            allReminders[index].cancelAllScheduledReminders()
+            // Schedule new notifications
+            for date in notificationDates {
+                allReminders[index].scheduleNewReminder(on: date)
+            }
             // Replace the reminder with the updated one
             allReminders[index] = reminder
         }
-        // Save
         saveState()
     }
     

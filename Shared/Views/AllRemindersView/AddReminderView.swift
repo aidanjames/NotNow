@@ -113,6 +113,8 @@ struct AddReminderView: View {
         description = reminder!.description
         if reminder!.nextDueDate == Date.futureDate {
             selectedDueDateOption = 1
+        } else if reminder!.nextDueDate < Date() {
+            reminderDate = Date()
         } else {
             reminderDate = reminder!.nextDueDate
         }
@@ -126,7 +128,7 @@ struct AddReminderView: View {
             // Make a new reminder object (which will just be a copy of the updated existing reminder)
             if let reminder = reminder {
                 let updatedReminder = Reminder(id: reminder.id, createdDate: reminder.createdDate, title: title, description: description, URL: nil, tags: tags, nextDueDate: reminderDate, completed: false, notifications: [:])
-                viewModel.updateReminder(reminder: updatedReminder, notificationDates: [reminderDate])
+                viewModel.updateReminder(reminder: updatedReminder, notificationDates: scheduleReminder ? [reminderDate] : [])
             }
         } else {
             // Add new reminder

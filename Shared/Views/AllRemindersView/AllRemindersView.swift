@@ -35,7 +35,7 @@ struct AllRemindersView: View {
                                     message: Text("There is no undo"),
                                     primaryButton: .destructive(Text("Delete")) {
                                         withAnimation {
-                                            viewModel.deleteReminder(id: viewModel.tappedReminder!)
+                                            viewModel.deleteNotificationsForReminder(id: viewModel.tappedReminder!)
                                         }
                                     },
                                     secondaryButton: .cancel())
@@ -85,6 +85,11 @@ struct AllRemindersView: View {
                     }) {
                         Image(systemName: "plus.circle.fill")
                             .font(.title)
+                    }
+                }
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Print notifications") {
+                        NotificationManager.shared.printAllNotifications()
                     }
                 }
             }

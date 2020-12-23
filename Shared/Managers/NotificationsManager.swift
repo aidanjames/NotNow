@@ -18,9 +18,7 @@ class NotificationManager {
     
     func requestPermission() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
-            if success {
-                // Good to go
-            } else if let error = error {
+            if let error = error {
                 print(error.localizedDescription)
             }
         }
@@ -44,11 +42,6 @@ class NotificationManager {
     }
     
     
-    func snoozeReminder(id: String, snoozeDelay: Int) {
-        // TODO
-    }
-    
-    
     func cancelSpecificNotifications(ids: [String]) {
         center.removePendingNotificationRequests(withIdentifiers: ids)
     }
@@ -57,6 +50,15 @@ class NotificationManager {
     
     func cancelAllNotificaitons() {
         center.removeAllPendingNotificationRequests()
+    }
+    
+    // To be deleted - diagnostics only
+    func printAllNotifications() {
+        center.getPendingNotificationRequests() { notifications in
+            for notification in notifications {
+                print("\(notification.identifier): \(notification.content)")
+            }
+        }
     }
     
     

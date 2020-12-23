@@ -88,10 +88,19 @@ struct ReminderListView: View {
         .frame(height: height)
         .opacity(reminder.completed ? 0.5 : 1.0)
         .onReceive(timer) { date in
-            if date > reminder.nextDueDate {
-                isOverdue = true
-            } else {
-                isOverdue = false
+            withAnimation {
+                if date > reminder.nextDueDate {
+                    isOverdue = true
+                    if !reminder.notifications.isEmpty {
+                        let overdueNotifications = reminder.notifications.filter { $0.value < Date() }
+                        guard !overdueNotifications.isEmpty else { return }
+                        for notification in overdueNotifications {
+                            viewModel.deleteSpecificNotificationForReminder(reminderId: reminder.id, notificationId: notification.key)
+                        }
+                    }
+                } else {
+                    isOverdue = false
+                }
             }
         }
     }

@@ -11,7 +11,10 @@ import SwiftUI
 struct NotNowApp: App {
     var body: some Scene {
         WindowGroup {
-            AllRemindersView()
+            NavigationView {
+                AllRemindersView()
+            }
+            .accentColor(Color(Colours.hotCoral))
         }
     }
 }

@@ -21,6 +21,25 @@ class NotificationManager {
             if let error = error {
                 print(error.localizedDescription)
             }
+            // Define the custom actions.
+            let acceptAction = UNNotificationAction(identifier: "ACCEPT_ACTION",
+                  title: "Accept",
+                  options: UNNotificationActionOptions(rawValue: 0))
+            let declineAction = UNNotificationAction(identifier: "DECLINE_ACTION",
+                  title: "Decline",
+                  options: UNNotificationActionOptions(rawValue: 0))
+            // Define the notification type
+            let meetingInviteCategory =
+                  UNNotificationCategory(identifier: "MEETING_INVITATION",
+                  actions: [acceptAction, declineAction],
+                  intentIdentifiers: [],
+                  hiddenPreviewsBodyPlaceholder: "",
+                  options: .customDismissAction)
+            // Register the notification type.
+            let notificationCenter = UNUserNotificationCenter.current()
+            notificationCenter.setNotificationCategories([meetingInviteCategory])
+            // Refiew the following to complete implementation:
+            // https://developer.apple.com/documentation/usernotifications/declaring_your_actionable_notification_types
         }
     }
     

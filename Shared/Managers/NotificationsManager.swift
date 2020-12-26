@@ -40,6 +40,8 @@ class NotificationManager {
             notificationCenter.setNotificationCategories([meetingInviteCategory])
             // Refiew the following to complete implementation:
             // https://developer.apple.com/documentation/usernotifications/declaring_your_actionable_notification_types
+            // https://www.youtube.com/watch?v=BW9dVMNNpkY
+            // https://www.hackingwithswift.com/quick-start/swiftui/how-to-add-an-appdelegate-to-a-swiftui-app
         }
     }
     

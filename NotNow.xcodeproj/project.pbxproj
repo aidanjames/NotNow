@@ -26,6 +26,8 @@
 		3DA51A692575834D00802547 /* ReminderListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA51A682575834D00802547 /* ReminderListView.swift */; };
 		3DB23586257412CB0047BD87 /* Date+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB23585257412CB0047BD87 /* Date+Ext.swift */; };
 		3DC62BAD257033E2001A6DF0 /* AddReminderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC62BAC257033E2001A6DF0 /* AddReminderView.swift */; };
+		3DFB8B8B2597A768002A869A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFB8B8A2597A768002A869A /* AppDelegate.swift */; };
+		3DFB8B8C2597A768002A869A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFB8B8A2597A768002A869A /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,6 +53,7 @@
 		3DA51A682575834D00802547 /* ReminderListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderListView.swift; sourceTree = "<group>"; };
 		3DB23585257412CB0047BD87 /* Date+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Ext.swift"; sourceTree = "<group>"; };
 		3DC62BAC257033E2001A6DF0 /* AddReminderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReminderView.swift; sourceTree = "<group>"; };
+		3DFB8B8A2597A768002A869A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +141,7 @@
 				3D97381F256C4624004FD805 /* Managers */,
 				3D97381A256ABB80004FD805 /* Model */,
 				3D9737F7256ABB6C004FD805 /* NotNowApp.swift */,
+				3DFB8B8A2597A768002A869A /* AppDelegate.swift */,
 				3D9737F9256ABB6D004FD805 /* Assets.xcassets */,
 			);
 			path = Shared;
@@ -307,6 +311,7 @@
 				3D54BA19256D843B0027B0E2 /* AllRemindersEmptyStateView.swift in Sources */,
 				3D54BA13256D827C0027B0E2 /* AllRemindersViewModel.swift in Sources */,
 				3D571A492578272B00BC7BC6 /* TagView.swift in Sources */,
+				3DFB8B8B2597A768002A869A /* AppDelegate.swift in Sources */,
 				3D324B70258155910045159E /* DateView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -315,6 +320,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3DFB8B8C2597A768002A869A /* AppDelegate.swift in Sources */,
 				3D97380B256ABB6D004FD805 /* NotNowApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

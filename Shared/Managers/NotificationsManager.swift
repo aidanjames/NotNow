@@ -54,6 +54,13 @@ class NotificationManager {
             content.subtitle = subtitle
             content.sound = UNNotificationSound.default
             
+            let snooze5 = UNNotificationAction(identifier: "snooze5", title: "Snooze for 5 mins", options: .foreground)
+            let snooze10 = UNNotificationAction(identifier: "snooze10", title: "Snooze for 10 mins", options: .foreground)
+            let cancel = UNNotificationAction(identifier: "cancel", title: "Cancel", options: .destructive)
+            let categories = UNNotificationCategory(identifier: "action", actions: [snooze5, snooze10, cancel], intentIdentifiers: [])
+            UNUserNotificationCenter.current().setNotificationCategories([categories])
+            content.categoryIdentifier = "action"
+            
             let trigger = UNTimeIntervalNotificationTrigger(timeInterval: delay, repeats: false)
             
             let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)

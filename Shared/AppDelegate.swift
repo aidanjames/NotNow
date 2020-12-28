@@ -47,13 +47,11 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         // Perform the task associated with the action.
         switch response.actionIdentifier {
         case "SNOOZE_5":
-            print("I should be snoozing reminder \(reminderId) for 5 minutes")
             var reminders = PersistenceManager.shared.fetchReminders()
             if let index = reminders.firstIndex(where: { $0.id.uuidString == reminderId }) {
                 let nextDueDate = Date().addingTimeInterval(300)
                 reminders[index].nextDueDate = nextDueDate
                 reminders[index].scheduleNewNotification(on: nextDueDate)
-                print(reminders)
                 PersistenceManager.shared.saveReminders(reminders)
             }
             break
@@ -64,7 +62,6 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
                 let nextDueDate = Date().addingTimeInterval(600)
                 reminders[index].nextDueDate = nextDueDate
                 reminders[index].scheduleNewNotification(on: nextDueDate)
-                print(reminders)
                 PersistenceManager.shared.saveReminders(reminders)
             }
             break

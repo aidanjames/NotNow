@@ -81,6 +81,7 @@ struct AddReminderView: View {
                 }
             })
             .onAppear {
+                NotificationManager.shared.requestPermission()
                 populateExistingReminderDetails()
             }
             .onDisappear {

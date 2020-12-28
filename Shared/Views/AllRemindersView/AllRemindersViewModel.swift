@@ -89,5 +89,9 @@ class AllRemindersViewModel: ObservableObject {
     func saveState() {
         PersistenceManager.shared.saveReminders(allReminders)
     }
+    
+    func refreshData() {
+        allReminders = PersistenceManager.shared.fetchReminders()
+    }
 
 }

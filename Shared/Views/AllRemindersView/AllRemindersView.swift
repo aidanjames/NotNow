@@ -86,14 +86,18 @@ struct AllRemindersView: View {
                         .font(.title)
                 }
             }
-            ToolbarItem(placement: .cancellationAction) {
-                Button(action: {
-                    NotificationManager.shared.printAllNotifications()
-                }) {
-                    Text("print notifications")
-                }
-            }
+//            ToolbarItem(placement: .cancellationAction) {
+//                Button(action: {
+//                    NotificationManager.shared.printAllNotifications()
+//                }) {
+//                    Text("print notifications")
+//                }
+//            }
         }
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+            viewModel.refreshData()
+        }
+        
     }
     
     func snoozeTappedReminder(by seconds: Double) {

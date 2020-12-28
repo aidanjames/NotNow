@@ -32,11 +32,11 @@ struct Reminder: Codable, Identifiable {
         }
     }
     
-    mutating func scheduleNewReminder(on reminderDate: Date) {
-        let reminderId = UUID().uuidString
+    mutating func scheduleNewNotification(on reminderDate: Date) {
+        let notificationId = UUID().uuidString
         let delay = reminderDate.timeIntervalSince(Date())
-        NotificationManager.shared.scheduleNewNotification(id: reminderId, title: title, subtitle: description, delay: delay)
-        self.notifications[reminderId] = reminderDate
+        NotificationManager.shared.scheduleNewNotification(id: notificationId, reminderId: id.uuidString, title: title, subtitle: description, delay: delay)
+        self.notifications[notificationId] = reminderDate
     }
     
     mutating func snoozeDueTime(by seconds: Double) {
@@ -47,7 +47,7 @@ struct Reminder: Codable, Identifiable {
         // Change the due date
         self.nextDueDate = newTime
         // Shedule a new reminder
-        self.scheduleNewReminder(on: newTime)
+        self.scheduleNewNotification(on: newTime)
     }
     
 }

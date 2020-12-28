@@ -31,19 +31,20 @@ class AllRemindersViewModel: ObservableObject {
         
         NotificationManager.shared.requestPermission()
         
-        var reminderIds = [String]()
+        let reminderId = UUID()
+        var notificationIds = [String]()
         var notifications = [String: Date]()
         for date in notificationDates {
             if date > Date() {
                 let delay = date - Date()
                 let id = UUID().uuidString
-                NotificationManager.shared.scheduleNewNotification(id: id, title: title, subtitle: description, delay: delay)
-                reminderIds.append(id)
+                NotificationManager.shared.scheduleNewNotification(id: id, reminderId: reminderId.uuidString, title: title, subtitle: description, delay: delay)
+                notificationIds.append(id)
                 notifications[id] = Date().addingTimeInterval(delay)
             }
         }
         
-        let newReminder = Reminder(title: title, description: description, URL: nil, tags: tags, nextDueDate: nextDueDate, notifications: notifications)
+        let newReminder = Reminder(id: reminderId, title: title, description: description, URL: nil, tags: tags, nextDueDate: nextDueDate, notifications: notifications)
         
         self.allReminders.append(newReminder)
         saveState()
@@ -59,7 +60,7 @@ class AllRemindersViewModel: ObservableObject {
             // Schedule new notifications
             for date in notificationDates {
                 if date > Date() {
-                    replacementReminder.scheduleNewReminder(on: date)
+                    replacementReminder.scheduleNewNotification(on: date)
                 }
             }
             // Replace the reminder with the updated one

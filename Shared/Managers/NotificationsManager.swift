@@ -21,45 +21,19 @@ class NotificationManager {
             if let error = error {
                 print(error.localizedDescription)
             }
-            // Define the custom actions.
-            let acceptAction = UNNotificationAction(identifier: "ACCEPT_ACTION",
-                  title: "Accept",
-                  options: UNNotificationActionOptions(rawValue: 0))
-            let declineAction = UNNotificationAction(identifier: "DECLINE_ACTION",
-                  title: "Decline",
-                  options: UNNotificationActionOptions(rawValue: 0))
-            // Define the notification type
-            let meetingInviteCategory =
-                  UNNotificationCategory(identifier: "MEETING_INVITATION",
-                  actions: [acceptAction, declineAction],
-                  intentIdentifiers: [],
-                  hiddenPreviewsBodyPlaceholder: "",
-                  options: .customDismissAction)
-            // Register the notification type.
-            let notificationCenter = UNUserNotificationCenter.current()
-            notificationCenter.setNotificationCategories([meetingInviteCategory])
-            // Refiew the following to complete implementation:
-            // https://developer.apple.com/documentation/usernotifications/declaring_your_actionable_notification_types
-            // https://www.youtube.com/watch?v=BW9dVMNNpkY
-            // https://www.hackingwithswift.com/quick-start/swiftui/how-to-add-an-appdelegate-to-a-swiftui-app
         }
     }
     
     
-    func scheduleNewNotification(id: String, title: String, subtitle: String, delay: Double) {
+    func scheduleNewNotification(id: String, reminderId: String, title: String, subtitle: String, delay: Double) {
         center.getNotificationSettings { settings in
             guard (settings.authorizationStatus == .authorized) else { return }
             let content = UNMutableNotificationContent()
             content.title = title
             content.subtitle = subtitle
             content.sound = UNNotificationSound.default
-            
-            let snooze5 = UNNotificationAction(identifier: "snooze5", title: "Snooze for 5 mins", options: .foreground)
-            let snooze10 = UNNotificationAction(identifier: "snooze10", title: "Snooze for 10 mins", options: .foreground)
-            let cancel = UNNotificationAction(identifier: "cancel", title: "Cancel", options: .destructive)
-            let categories = UNNotificationCategory(identifier: "action", actions: [snooze5, snooze10, cancel], intentIdentifiers: [])
-            UNUserNotificationCenter.current().setNotificationCategories([categories])
-            content.categoryIdentifier = "action"
+            content.userInfo = ["REMINDER_ID": reminderId]
+            content.categoryIdentifier = "REMINDER_NOTIFICATION"
             
             let trigger = UNTimeIntervalNotificationTrigger(timeInterval: delay, repeats: false)
             
@@ -82,6 +56,7 @@ class NotificationManager {
     
     // To be deleted - diagnostics only
     func printAllNotifications() {
+        print("Should be getting notifications now")
         center.getPendingNotificationRequests() { notifications in
             for notification in notifications {
                 print("\(notification.identifier): \(notification.content)")

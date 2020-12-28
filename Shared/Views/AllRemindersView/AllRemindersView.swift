@@ -42,9 +42,9 @@ struct AllRemindersView: View {
                         .actionSheet(isPresented: $showingSnoozeActionSheet) {
                             ActionSheet(title: Text("Select an option"), message: nil, buttons: [
                                 .destructive(Text("Delete '\(tappedReminderTitle)'")) { showingDeleteWarning.toggle() },
-                                .default(Text("Snooze by 5 minutes")) {
+                                .default(Text("Snooze by 30 seconds")) {
                                     withAnimation {
-                                        snoozeTappedReminder(by: 300)
+                                        snoozeTappedReminder(by: 30)
                                     }
                                 },
                                 .default(Text("Snooze by 30 minutes")) {
@@ -84,6 +84,13 @@ struct AllRemindersView: View {
                 }) {
                     Image(systemName: "plus.circle.fill")
                         .font(.title)
+                }
+            }
+            ToolbarItem(placement: .cancellationAction) {
+                Button(action: {
+                    NotificationManager.shared.printAllNotifications()
+                }) {
+                    Text("print notifications")
                 }
             }
         }

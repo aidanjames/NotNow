@@ -20,6 +20,7 @@ class PersistenceManager {
     }
     
     func saveReminders(_ reminders: [Reminder]) {
+        print("I've been asked to save these guys.... \(reminders)")
         FileManager.default.writeData(reminders, to: FileManagerNames.allReminders)
     }
     

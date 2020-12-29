@@ -27,7 +27,7 @@ struct AllRemindersView: View {
         ScrollView {
             LazyVStack {
                 ForEach(viewModel.allRemindersSorted) { reminder in
-                    ReminderListView(viewModel: viewModel, showingSnoozeActionSheet: $showingSnoozeActionSheet, reminder: reminder, height: 120)
+                    ReminderListView(viewModel: viewModel, showingSnoozeActionSheet: $showingSnoozeActionSheet, reminder: reminder, height: 110)
                         .alert(isPresented: $showingDeleteWarning) {
                             Alert(
                                 title: Text("Are you sure you want to delete this?"),

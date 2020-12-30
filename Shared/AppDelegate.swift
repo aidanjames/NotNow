@@ -10,14 +10,13 @@ import UserNotifications
 
 class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        
-        
+                
         // Define the custom actions.
-        let snooze10Action = UNNotificationAction(identifier: "SNOOZE_10", title: "Zzz 10 minutes", options: UNNotificationActionOptions(rawValue: 0))
-        let snooze1HourAction = UNNotificationAction(identifier: "SNOOZE_1_HOUR", title: "Zzz 1 hour", options: UNNotificationActionOptions(rawValue: 0))
-        let snoozeThisEveningAction = UNNotificationAction(identifier: "SNOOZE_THIS_EVENING", title: "Zzz This evening (7pm)", options: UNNotificationActionOptions(rawValue: 0))
-        let snoozeTomorrowMorningAction = UNNotificationAction(identifier: "SNOOZE_TOMORROW_MORNING", title: "Zzz Tomorrow morning (10am)", options: UNNotificationActionOptions(rawValue: 0))
-        let snoozeThisWeekendAction = UNNotificationAction(identifier: "SNOOZE_THIS_WEEKEND", title: "Zzz Sat morning (10am)", options: UNNotificationActionOptions(rawValue: 0))
+        let snooze10Action = UNNotificationAction(identifier: "SNOOZE_10", title: "Remind me in 10 mins", options: UNNotificationActionOptions(rawValue: 0))
+        let snooze1HourAction = UNNotificationAction(identifier: "SNOOZE_1_HOUR", title: "Remind me in an hour", options: UNNotificationActionOptions(rawValue: 0))
+        let snoozeThisEveningAction = UNNotificationAction(identifier: "SNOOZE_THIS_EVENING", title: "Remind me at 7pm", options: UNNotificationActionOptions(rawValue: 0))
+        let snoozeTomorrowMorningAction = UNNotificationAction(identifier: "SNOOZE_TOMORROW_MORNING", title: "Remind me tomorrow morning", options: UNNotificationActionOptions(rawValue: 0))
+        let snoozeThisWeekendAction = UNNotificationAction(identifier: "SNOOZE_THIS_WEEKEND", title: "Remind me on Saturday morning", options: UNNotificationActionOptions(rawValue: 0))
         let markCompleteAction = UNNotificationAction(identifier: "MARK_COMPLETE", title: "Mark complete", options: UNNotificationActionOptions(rawValue: 0))
         let editRescheduleAction = UNNotificationAction(identifier: "EDIT_RESCHEDULE", title: "Edit/Reschedule", options: .foreground)
 
@@ -73,8 +72,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         case "SNOOZE_THIS_EVENING":
             var reminders = PersistenceManager.shared.fetchReminders()
             if let index = reminders.firstIndex(where: { $0.id.uuidString == reminderId }) {
-                // TODO - Calculate time until closest 7pm
-                let nextDueDate = Date().addingTimeInterval(300)
+                let nextDueDate = Date().addingTimeInterval(Date().secondsUntilThisEvening())
                 reminders[index].nextDueDate = nextDueDate
                 reminders[index].scheduleNewNotification(on: nextDueDate)
                 PersistenceManager.shared.saveReminders(reminders)
@@ -83,8 +81,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         case "SNOOZE_TOMORROW_MORNING":
             var reminders = PersistenceManager.shared.fetchReminders()
             if let index = reminders.firstIndex(where: { $0.id.uuidString == reminderId }) {
-                // TODO - Calculate time until closest 10am
-                let nextDueDate = Date().addingTimeInterval(300)
+                let nextDueDate = Date().addingTimeInterval(Date().secondsUntilTomorrowMorning())
                 reminders[index].nextDueDate = nextDueDate
                 reminders[index].scheduleNewNotification(on: nextDueDate)
                 PersistenceManager.shared.saveReminders(reminders)
@@ -93,8 +90,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         case "SNOOZE_THIS_WEEKEND":
             var reminders = PersistenceManager.shared.fetchReminders()
             if let index = reminders.firstIndex(where: { $0.id.uuidString == reminderId }) {
-                // TODO - Calculate time until closest Sat 10am
-                let nextDueDate = Date().addingTimeInterval(15)
+                let nextDueDate = Date().addingTimeInterval(Date().secondsUntilThisWeekend())
                 reminders[index].nextDueDate = nextDueDate
                 reminders[index].scheduleNewNotification(on: nextDueDate)
                 PersistenceManager.shared.saveReminders(reminders)
@@ -119,6 +115,12 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         completionHandler()
     }
     
+    // This is not being called... why not?
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        print("The willPresent notification app delegate method is being called")
+        let options = UNNotificationPresentationOptions(rawValue: 4)
+        completionHandler(options)
+    }
     
     
 }

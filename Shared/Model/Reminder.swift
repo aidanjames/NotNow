@@ -31,17 +31,11 @@ struct Reminder: Codable, Identifiable {
             notifications.removeValue(forKey: id)
         }
     }
+
     
     mutating func scheduleNewNotification(on reminderDate: Date) {
         let notificationId = UUID().uuidString
-        let delay = reminderDate.timeIntervalSince(Date())
-        NotificationManager.shared.scheduleNewNotification(id: notificationId, reminderId: id.uuidString, title: title, subtitle: description, delay: delay, date: nil)
-        self.notifications[notificationId] = reminderDate
-    }
-    
-    mutating func scheduleNewNotification2(on reminderDate: Date) {
-        let notificationId = UUID().uuidString
-        NotificationManager.shared.scheduleNewNotification2(id: notificationId, reminderId: id.uuidString, title: title, subtitle: description, notificationCategory: reminderDate.notificationCategoryToUse(), date: reminderDate.notificationDateComponents())
+        NotificationManager.shared.scheduleNewNotification(id: notificationId, reminderId: id.uuidString, title: title, subtitle: description, notificationCategory: reminderDate.notificationCategoryToUse(), date: reminderDate.notificationDateComponents())
         self.notifications[notificationId] = reminderDate
     }
     

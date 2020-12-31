@@ -23,44 +23,9 @@ class NotificationManager {
             }
         }
     }
-    
-    
-    func scheduleNewNotification(id: String, reminderId: String, title: String, subtitle: String, delay: Double?, date: Date?) {
-        center.getNotificationSettings { settings in
-            guard (settings.authorizationStatus == .authorized) else { return }
-            let content = UNMutableNotificationContent()
-            content.title = title
-            content.subtitle = subtitle
-            content.sound = UNNotificationSound.default
-            content.userInfo = ["REMINDER_ID": reminderId]
-            
-            if let notificationDate = date { // If we have a date, use that
-                let notificationCategory = notificationDate.notificationCategoryToUse().rawValue
-                content.categoryIdentifier = notificationCategory
 
-                
-                let trigger = UNCalendarNotificationTrigger(dateMatching: notificationDate.notificationDateComponents(), repeats: false)
-                
-                let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
-                
-                self.center.add(request)
-                
-            } else if let notificationDelay = delay { // Othersise, if we have a delay, use that.
-                
-                content.categoryIdentifier = "REMINDER_NOTIFICATION"
-                
-                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: notificationDelay, repeats: false)
-                
-                let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
-                
-                self.center.add(request)
-            }
-
-        }
-    }
     
-    
-    func scheduleNewNotification2(id: String, reminderId: String, title: String, subtitle: String, notificationCategory: NotificationCategory, date: DateComponents) {
+    func scheduleNewNotification(id: String, reminderId: String, title: String, subtitle: String, notificationCategory: NotificationCategory, date: DateComponents) {
         center.getNotificationSettings { settings in
             guard (settings.authorizationStatus == .authorized) else { return }
             let content = UNMutableNotificationContent()
@@ -78,17 +43,7 @@ class NotificationManager {
         }
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     func cancelSpecificNotifications(ids: [String]) {
         center.removePendingNotificationRequests(withIdentifiers: ids)
     }

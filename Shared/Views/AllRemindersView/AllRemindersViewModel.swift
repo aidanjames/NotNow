@@ -38,7 +38,8 @@ class AllRemindersViewModel: ObservableObject {
             if date > Date() {
                 let delay = date - Date()
                 let id = UUID().uuidString
-                NotificationManager.shared.scheduleNewNotification(id: id, reminderId: reminderId.uuidString, title: title, subtitle: description, delay: delay, date: nil)
+//                NotificationManager.shared.scheduleNewNotification(id: id, reminderId: reminderId.uuidString, title: title, subtitle: description, delay: delay, date: nil)
+                NotificationManager.shared.scheduleNewNotification(id: id, reminderId: reminderId.uuidString, title: title, subtitle: description, notificationCategory: date.notificationCategoryToUse(), date: date.notificationDateComponents())
                 notificationIds.append(id)
                 notifications[id] = Date().addingTimeInterval(delay)
             }

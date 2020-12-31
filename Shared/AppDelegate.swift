@@ -21,23 +21,26 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         let markCompleteAction = UNNotificationAction(identifier: "MARK_COMPLETE", title: "Mark complete", options: UNNotificationActionOptions(rawValue: 0))
         let editRescheduleAction = UNNotificationAction(identifier: "EDIT_RESCHEDULE", title: "Edit/Reschedule", options: .foreground)
 
-        // Define the notification type
-//        let reminderNotificationCategory =
-//            UNNotificationCategory(identifier: "REMINDER_NOTIFICATION",
-//                                   actions: [snooze10Action, snooze1HourAction, snoozeThisEveningAction, snoozeTomorrowMorningAction, snoozeThisWeekendAction, markCompleteAction, editRescheduleAction],
-//                                   intentIdentifiers: [],
-//                                   hiddenPreviewsBodyPlaceholder: "",
-//                                   options: .customDismissAction)
+        // Delete this once all my legacy notifications have triggered
+        let reminderNotificationCategory =
+            UNNotificationCategory(identifier: "REMINDER_NOTIFICATION",
+                                   actions: [snooze10Action, snooze1HourAction, snoozeThisEveningAction, snoozeTomorrowMorningAction, snoozeThisWeekendAction, markCompleteAction, editRescheduleAction],
+                                   intentIdentifiers: [],
+                                   hiddenPreviewsBodyPlaceholder: "",
+                                   options: .customDismissAction)
         
-        // Here is where I will configure multiple notification categories which can be used by the notification manager when it knows the time of day that the notification will trigger!
-        let weekdayDayCategory = UNNotificationCategory(identifier: NotificationCategory.weekdayDay.rawValue, actions: [markCompleteAction, snooze10Action, snooze1HourAction, snoozeThisEveningAction, snoozeTomorrowMorningAction, snoozeThisWeekendAction, editRescheduleAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: [])
-        let weekendDayCategory = UNNotificationCategory(identifier: NotificationCategory.weekendDay.rawValue, actions: [markCompleteAction, snooze10Action, snooze1HourAction, snoozeThisEveningAction, snoozeTomorrowMorningAction, snoozeNextWeekendAction, editRescheduleAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: [])
-        let weekdayAfternoonCategory = UNNotificationCategory(identifier: NotificationCategory.weekdayAfternoon.rawValue, actions: [markCompleteAction, snooze10Action, snooze1HourAction, snoozeTomorrowMorningAction, snoozeThisWeekendAction, editRescheduleAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: [])
-        let weekendAfternoonCategory = UNNotificationCategory(identifier: NotificationCategory.weekendAfternoon.rawValue, actions: [markCompleteAction, snooze10Action, snooze1HourAction, snoozeTomorrowMorningAction, snoozeNextWeekendAction, editRescheduleAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: [])
+        // Categories to be assigned to the new notification depending on the time of day the notification will trigger
+        let weekdayDayCategory = UNNotificationCategory(identifier: NotificationCategory.weekdayDay.rawValue, actions: [markCompleteAction, snooze10Action, snooze1HourAction, snoozeThisEveningAction, snoozeTomorrowMorningAction, snoozeThisWeekendAction, editRescheduleAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: .customDismissAction)
+       
+        let weekendDayCategory = UNNotificationCategory(identifier: NotificationCategory.weekendDay.rawValue, actions: [markCompleteAction, snooze10Action, snooze1HourAction, snoozeThisEveningAction, snoozeTomorrowMorningAction, snoozeNextWeekendAction, editRescheduleAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: .customDismissAction)
+        
+        let weekdayAfternoonCategory = UNNotificationCategory(identifier: NotificationCategory.weekdayAfternoon.rawValue, actions: [markCompleteAction, snooze10Action, snooze1HourAction, snoozeTomorrowMorningAction, snoozeThisWeekendAction, editRescheduleAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: .customDismissAction)
+        
+        let weekendAfternoonCategory = UNNotificationCategory(identifier: NotificationCategory.weekendAfternoon.rawValue, actions: [markCompleteAction, snooze10Action, snooze1HourAction, snoozeTomorrowMorningAction, snoozeNextWeekendAction, editRescheduleAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: .customDismissAction)
         
         // Register the notification type.
         let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.setNotificationCategories([weekdayDayCategory, weekendDayCategory, weekdayAfternoonCategory, weekendAfternoonCategory])
+        notificationCenter.setNotificationCategories([weekdayDayCategory, weekendDayCategory, weekdayAfternoonCategory, weekendAfternoonCategory, reminderNotificationCategory])
         // Review the following to complete implementation:
         // https://developer.apple.com/documentation/usernotifications/declaring_your_actionable_notification_types
         // https://www.youtube.com/watch?v=BW9dVMNNpkY
@@ -78,7 +81,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         case "SNOOZE_THIS_EVENING":
             var reminders = PersistenceManager.shared.fetchReminders()
             if let index = reminders.firstIndex(where: { $0.id.uuidString == reminderId }) {
-                let nextDueDate = Date().addingTimeInterval(Date().secondsUntilThisEvening())
+                let nextDueDate = Date().thisEvening()
                 reminders[index].nextDueDate = nextDueDate
                 reminders[index].scheduleNewNotification(on: nextDueDate)
                 PersistenceManager.shared.saveReminders(reminders)
@@ -87,7 +90,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         case "SNOOZE_TOMORROW_MORNING":
             var reminders = PersistenceManager.shared.fetchReminders()
             if let index = reminders.firstIndex(where: { $0.id.uuidString == reminderId }) {
-                let nextDueDate = Date().addingTimeInterval(Date().secondsUntilTomorrowMorning())
+                let nextDueDate = Date().tomorrowMorning()
                 reminders[index].nextDueDate = nextDueDate
                 reminders[index].scheduleNewNotification(on: nextDueDate)
                 PersistenceManager.shared.saveReminders(reminders)
@@ -96,7 +99,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         case "SNOOZE_THIS_WEEKEND":
             var reminders = PersistenceManager.shared.fetchReminders()
             if let index = reminders.firstIndex(where: { $0.id.uuidString == reminderId }) {
-                let nextDueDate = Date().addingTimeInterval(Date().secondsUntilThisWeekend())
+                let nextDueDate = Date().saturdayMorning()
                 reminders[index].nextDueDate = nextDueDate
                 reminders[index].scheduleNewNotification(on: nextDueDate)
                 PersistenceManager.shared.saveReminders(reminders)
@@ -105,7 +108,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         case "SNOOZE_NEXT_WEEKEND":
             var reminders = PersistenceManager.shared.fetchReminders()
             if let index = reminders.firstIndex(where: { $0.id.uuidString == reminderId }) {
-                let nextDueDate = Date().addingTimeInterval(Date().secondsUntilThisWeekend())
+                let nextDueDate = Date().saturdayMorning()
                 reminders[index].nextDueDate = nextDueDate
                 reminders[index].scheduleNewNotification(on: nextDueDate)
                 PersistenceManager.shared.saveReminders(reminders)
@@ -128,13 +131,6 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
             break
         }
         completionHandler()
-    }
-    
-    // This is not being called... why not?
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        print("The willPresent notification app delegate method is being called")
-        let options = UNNotificationPresentationOptions(rawValue: 4)
-        completionHandler(options)
     }
     
     

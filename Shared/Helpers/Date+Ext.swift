@@ -109,6 +109,18 @@ extension Date {
         return notificationDate - self
     }
     
+    func notificationCategoryToUse() -> NotificationCategory {
+        // TODO
+        return .weekdayAfternoon
+    }
+    
+    func notificationDateComponents() -> DateComponents {
+        // TODO
+        let nextTriggerDate = Calendar.current.date(byAdding: .day, value: 7, to: self)!
+        let comps = Calendar.current.dateComponents([.year, .month, .day], from: nextTriggerDate)
+        return comps
+    }
+    
 }
 
 

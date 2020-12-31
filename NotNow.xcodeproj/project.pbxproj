@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		3D08889F2572A18700E45C48 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D08889E2572A18700E45C48 /* BaseView.swift */; };
 		3D0888A52572A32E00E45C48 /* Color+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D0888A42572A32E00E45C48 /* Color+Ext.swift */; };
-		3D324B70258155910045159E /* DateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D324B6F258155910045159E /* DateView.swift */; };
 		3D54B9FE256D80270027B0E2 /* PersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D54B9FD256D80270027B0E2 /* PersistenceManager.swift */; };
 		3D54BA03256D81020027B0E2 /* FileManager+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D54BA02256D81020027B0E2 /* FileManager+Ext.swift */; };
 		3D54BA07256D813E0027B0E2 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D54BA06256D813E0027B0E2 /* Constants.swift */; };
@@ -33,7 +32,6 @@
 /* Begin PBXFileReference section */
 		3D08889E2572A18700E45C48 /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
 		3D0888A42572A32E00E45C48 /* Color+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Ext.swift"; sourceTree = "<group>"; };
-		3D324B6F258155910045159E /* DateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateView.swift; sourceTree = "<group>"; };
 		3D54B9FD256D80270027B0E2 /* PersistenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceManager.swift; sourceTree = "<group>"; };
 		3D54BA02256D81020027B0E2 /* FileManager+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Ext.swift"; sourceTree = "<group>"; };
 		3D54BA06256D813E0027B0E2 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -194,7 +192,6 @@
 			isa = PBXGroup;
 			children = (
 				3DA51A682575834D00802547 /* ReminderListView.swift */,
-				3D324B6F258155910045159E /* DateView.swift */,
 			);
 			path = ReminderListView;
 			sourceTree = "<group>";
@@ -312,7 +309,6 @@
 				3D54BA13256D827C0027B0E2 /* AllRemindersViewModel.swift in Sources */,
 				3D571A492578272B00BC7BC6 /* TagView.swift in Sources */,
 				3DFB8B8B2597A768002A869A /* AppDelegate.swift in Sources */,
-				3D324B70258155910045159E /* DateView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

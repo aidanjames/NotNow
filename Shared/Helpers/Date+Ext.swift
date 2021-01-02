@@ -53,23 +53,45 @@ extension Date {
         let calendar = Calendar(identifier: .gregorian)
         let currentDay = calendar.component(.weekday, from: self)
         let currentHour = calendar.component(.hour, from: self)
-        // Is it a weekend?
-        if currentDay == 7 || currentDay == 1 {
-            if currentHour >= 18 {
-                // Is a weekend and is in the evening
-                return .weekendAfternoon
+
+        // If it's Friday I won't allow them to schedule for THIS weekend as it's the same as 'Tomorrow morning'
+        // If it's Saturday, they can schedule for NEXT weekend
+        // If it's Sunday, they can schedule for NEXT weekend
+        if currentDay != 6 && currentDay != 7 && currentDay != 1 {
+            if currentHour < 12 {
+                return .weekdayMorning
+            } else if currentHour < 18 {
+                return .weekdayDay
             } else {
-                // Is a weekend but not past 18:00
-                return .weekendDay
+                return .weekdayAfternoon
             }
-        } else if currentHour >= 18 {
-            // It's a weekday and is in the evening
-            return .weekdayAfternoon
         } else {
-            // It's a weekday but not past 18:00
-            return .weekdayDay
+            if currentHour < 12 {
+                return .weekendMorning
+            } else if currentHour < 18 {
+                return .weekendDay
+            } else {
+                return .weekendAfternoon
+            }
         }
 
+    }
+    
+    
+    func thisAfternoon() -> Date {
+        var notificationDate = self
+        // If it is already past 12:00 for the current day move the notification date to tomorrow
+        let calendar = Calendar(identifier: .gregorian)
+        if calendar.component(.hour, from: self) >= 13 {
+            notificationDate = self.addingTimeInterval(86400)
+        }
+        // Make a date object with 13:00 as the time
+        var components = DateComponents()
+        components.day = calendar.component(.day, from: notificationDate)
+        components.month = calendar.component(.month, from: notificationDate)
+        components.year = calendar.component(.year, from: notificationDate)
+        components.hour = 13
+        return calendar.date(from: components)!
     }
     
     

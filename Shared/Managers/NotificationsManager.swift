@@ -67,6 +67,8 @@ class NotificationManager {
 }
 
 enum NotificationCategory: String {
+    case weekdayMorning // This afternoon, This evening, This weekend
+    case weekendMorning // This afternoon, This evening, Next weekend
     case weekdayDay // Tomorrow morning, This evening, This weekend
     case weekendDay // Tomorrow morning, This evening, Next weekend
     case weekdayAfternoon // Tomorrow morning, This weekend

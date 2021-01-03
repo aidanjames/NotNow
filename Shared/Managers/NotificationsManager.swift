@@ -5,6 +5,7 @@
 //  Created by Aidan Pendlebury on 23/11/2020.
 //
 
+import CoreLocation
 import Foundation
 import UserNotifications
 
@@ -43,6 +44,25 @@ class NotificationManager {
         }
     }
     
+    
+    func scheduleNewNotificationByLocation(id: String, reminderId: String, title: String, subtitle: String, notificationCategory: NotificationCategory, location: CLRegion) {
+        center.getNotificationSettings { settings in
+            guard (settings.authorizationStatus == .authorized) else { return }
+            let content = UNMutableNotificationContent()
+            content.title = title
+            content.subtitle = subtitle
+            content.sound = UNNotificationSound.default
+            content.userInfo = ["REMINDER_ID": reminderId]
+            content.categoryIdentifier = notificationCategory.rawValue
+
+            let trigger = UNLocationNotificationTrigger(region: location, repeats: false)
+            
+            let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
+            
+            self.center.add(request)
+        }
+    }
+    
 
     func cancelSpecificNotifications(ids: [String]) {
         center.removePendingNotificationRequests(withIdentifiers: ids)
@@ -73,4 +93,5 @@ enum NotificationCategory: String {
     case weekendDay // Tomorrow morning, This evening, Next weekend
     case weekdayAfternoon // Tomorrow morning, This weekend
     case weekendAfternoon // Tomorrow morning, Next weekend
+    case location // Location based
 }

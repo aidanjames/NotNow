@@ -37,9 +37,11 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         
         let weekendAfternoonCategory = UNNotificationCategory(identifier: NotificationCategory.weekendAfternoon.rawValue, actions: [markCompleteAction, snooze10Action, snooze1HourAction, snoozeTomorrowMorningAction, snoozeNextWeekendAction, editRescheduleAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: .customDismissAction)
         
+        let locationCategory = UNNotificationCategory(identifier: NotificationCategory.location.rawValue, actions: [markCompleteAction, editRescheduleAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: .customDismissAction)
+        
         // Register the notification type categories
         let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.setNotificationCategories([weekdayMorningCategory, weekendMorningCategory, weekdayDayCategory, weekendDayCategory, weekdayAfternoonCategory, weekendAfternoonCategory])
+        notificationCenter.setNotificationCategories([weekdayMorningCategory, weekendMorningCategory, weekdayDayCategory, weekendDayCategory, weekdayAfternoonCategory, weekendAfternoonCategory, locationCategory])
         
         UNUserNotificationCenter.current().delegate = self
         return true

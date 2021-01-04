@@ -25,7 +25,7 @@ struct Reminder: Codable, Identifiable {
         self.notifications = [:]
     }
     
-    mutating func cancelSpecificScheduledReminder(id: String) {
+    mutating func cancelSpecificScheduledNotification(id: String) {
         if let _ = notifications[id] {
             NotificationManager.shared.cancelSpecificNotifications(ids: [id])
             notifications.removeValue(forKey: id)

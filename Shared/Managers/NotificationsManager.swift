@@ -44,7 +44,8 @@ class NotificationManager {
         }
     }
     
-    
+    // Refer to the following article as to how to generate location based notifications:
+    // https://medium.com/@jonathan2457/location-triggered-notifications-on-ios-24033919fb9a
     func scheduleNewNotificationByLocation(id: String, reminderId: String, title: String, subtitle: String, notificationCategory: NotificationCategory, location: CLRegion) {
         center.getNotificationSettings { settings in
             guard (settings.authorizationStatus == .authorized) else { return }

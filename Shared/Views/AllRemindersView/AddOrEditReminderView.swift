@@ -1,5 +1,5 @@
 //
-//  AddReminderView.swift
+//  AddOrEditReminderView.swift
 //  NotNow (iOS)
 //
 //  Created by Aidan Pendlebury on 26/11/2020.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AddReminderView: View {
+struct AddOrEditReminderView: View {
     @ObservedObject var viewModel: AllRemindersViewModel
     var reminder: Reminder?
     
@@ -142,6 +142,6 @@ struct AddReminderView: View {
 
 struct AddReminderView_Previews: PreviewProvider {
     static var previews: some View {
-        AddReminderView(viewModel: AllRemindersViewModel(), reminder: Reminder(title: "My reminder", description: "This", nextDueDate: Date()))
+        AddOrEditReminderView(viewModel: AllRemindersViewModel(), reminder: Reminder(title: "My reminder", description: "This", nextDueDate: Date()))
     }
 }

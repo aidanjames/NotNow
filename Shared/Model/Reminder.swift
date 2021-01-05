@@ -25,6 +25,7 @@ struct Reminder: Codable, Identifiable {
         self.notifications = [:]
     }
     
+    
     mutating func cancelSpecificScheduledNotification(id: String) {
         if let _ = notifications[id] {
             NotificationManager.shared.cancelSpecificNotifications(ids: [id])
@@ -39,6 +40,7 @@ struct Reminder: Codable, Identifiable {
         self.notifications[notificationId] = reminderDate
     }
     
+    
     mutating func snoozeDueTime(by seconds: Double) {
         // Delete all notifications for the reminder (they will be replaced)
         self.cancelAllScheduledReminders()
@@ -46,7 +48,7 @@ struct Reminder: Codable, Identifiable {
         let newTime = Date().addingTimeInterval(seconds)
         // Change the due date
         self.nextDueDate = newTime
-        // Shedule a new reminder
+        // Shedule a new reminder (which updates the notifications dictionary)
         self.scheduleNewNotification(on: newTime)
     }
     

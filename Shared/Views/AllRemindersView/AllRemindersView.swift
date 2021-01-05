@@ -74,7 +74,7 @@ struct AllRemindersView: View {
             .padding(.horizontal, 10)
         }
         .fullScreenCover(isPresented: $viewModel.showingAddNewReminder) {
-            AddReminderView(viewModel: viewModel, reminder: viewModel.editReminder ? findReminderWithId(id: viewModel.tappedReminder!) : nil)
+            AddOrEditReminderView(viewModel: viewModel, reminder: viewModel.editReminder ? findReminderWithId(id: viewModel.tappedReminder!) : nil)
         }
         .navigationTitle("NotNow").foregroundColor(Color(Colours.midnightBlue))
         .toolbar {

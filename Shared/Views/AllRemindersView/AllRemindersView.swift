@@ -62,6 +62,16 @@ struct AllRemindersView: View {
                                         snoozeTappedReminder(by: 86400)
                                     }
                                 },
+                                .default(Text("Snooze until tomorrow morning")) {
+                                    if let index = viewModel.allReminders.firstIndex(where: { $0.id == viewModel.tappedReminder } ) {
+                                        withAnimation {
+                                            viewModel.allReminders[index].nextDueDate = Date().tomorrowMorning()
+                                            viewModel.allReminders[index].scheduleNewNotification(on: Date().tomorrowMorning())
+                                            viewModel.saveState()
+                                            viewModel.tappedReminder = nil
+                                        }
+                                    }
+                                },
                                 .default(Text("Edit/Reschedule")) {
                                     viewModel.editReminder = true
                                     viewModel.showingAddNewReminder = true

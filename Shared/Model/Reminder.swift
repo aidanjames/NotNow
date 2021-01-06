@@ -35,6 +35,7 @@ struct Reminder: Codable, Identifiable {
 
     
     mutating func scheduleNewNotification(on reminderDate: Date) {
+        self.cancelAllScheduledReminders()
         let notificationId = UUID().uuidString
         NotificationManager.shared.scheduleNewNotification(id: notificationId, reminderId: id.uuidString, title: title, subtitle: description, notificationCategory: reminderDate.notificationCategoryToUse(), date: reminderDate.notificationDateComponents())
         self.notifications[notificationId] = reminderDate
